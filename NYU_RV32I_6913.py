@@ -1,5 +1,9 @@
 import os
 import argparse
+from stage_utils import STAGES
+from instruction import Instruction, INSTR_TYPES
+from utils import sign_extend_32
+from alu import ALU
 
 MemSize = 1000 # memory size, in reality, the memory size should be 2^32, but for this lab, for the space resaon, we keep it as this large number, but the memory is still 32-bit addressable.
 
@@ -7,32 +11,39 @@ class InsMem(object):
     def __init__(self, name, ioDir):
         self.id = name
         
-        with open(ioDir + "\\imem.txt") as im:
+        with open(os.path.join(ioDir,'imem.txt')) as im:
             self.IMem = [data.replace("\n", "") for data in im.readlines()]
 
     def readInstr(self, ReadAddress):
         #read instruction memory
         #return 32 bit hex val
-        pass
+        if ReadAddress %4 != 0:
+            ReadAddress //= 4 # make sure it is a multiple of 4
+        instr_binary = "".join(self.IMem[ReadAddress:ReadAddress+4]) # read Big Endian instruction
+        return instr_binary # We choose to work with binary instruction as a string
           
 class DataMem(object):
     def __init__(self, name, ioDir):
         self.id = name
         self.ioDir = ioDir
-        with open(ioDir + "\\dmem.txt") as dm:
+        with open(os.path.join(ioDir,'dmem.txt')) as dm:
             self.DMem = [data.replace("\n", "") for data in dm.readlines()]
 
-    def readInstr(self, ReadAddress):
+    def readDataMem(self, ReadAddress):
         #read data memory
         #return 32 bit hex val
-        pass
+        if ReadAddress %4 != 0:
+            ReadAddress //= 4 # make sure it is a multiple of 4
+        data_binary = "".join(self.DMem[ReadAddress:ReadAddress+4]) # read Big Endian instruction
+        return data_binary
         
     def writeDataMem(self, Address, WriteData):
         # write data into byte addressable memory
+
         pass
                      
     def outputDataMem(self):
-        resPath = self.ioDir + "\\" + self.id + "_DMEMResult.txt"
+        resPath = os.path.join(ioDir, self.id + "_DMEMResult.txt")
         with open(resPath, "w") as rp:
             rp.writelines([str(data) + "\n" for data in self.DMem])
 
@@ -42,12 +53,10 @@ class RegisterFile(object):
         self.Registers = [0x0 for i in range(32)]
     
     def readRF(self, Reg_addr):
-        # Fill in
-        pass
+        return self.Registers[Reg_addr]
     
     def writeRF(self, Reg_addr, Wrt_reg_data):
-        # Fill in
-        pass
+       self.Registers[Reg_addr] = Wrt_reg_data
          
     def outputRF(self, cycle):
         op = ["-"*70+"\n", "State of RF after executing cycle:" + str(cycle) + "\n"]
@@ -80,16 +89,99 @@ class Core(object):
 
 class SingleStageCore(Core):
     def __init__(self, ioDir, imem, dmem):
-        super(SingleStageCore, self).__init__(ioDir + "\\SS_", imem, dmem)
-        self.opFilePath = ioDir + "\\StateResult_SS.txt"
+        super(SingleStageCore, self).__init__(os.path.join(ioDir,"SS_"), imem, dmem)
+        self.opFilePath = os.path.join(ioDir,"StateResult_SS.txt")
+        self.stage = STAGES.IF
+
+    def handle_IF(self):
+        self.instr = self.ext_imem.readInstr(self.state.IF["PC"])
+        self.stage = STAGES.ID
+        
+    def handle_ID(self):
+        self.parsed_instruction = Instruction(self.instr) # encapsulates control as well
+
+        if self.parsed_instruction.rs1:
+            self.state.EX["Read_data1"] = self.myRF.readRF(self.parsed_instruction.rs1)
+        
+        if self.parsed_instruction.rs2:
+            self.state.EX["Read_data2"] = self.myRF.readRF(self.parsed_instruction.rs2)
+        
+        if self.parsed_instruction.imm:
+            self.state.EX["Imm"] = self.parsed_instruction.imm
+        
+        if self.parsed_instruction.alu_control:
+            self.state.EX["alu_op"] = self.parsed_instruction.alu_control.get_operation()
+        
+        if self.parsed_instruction.rd:
+            self.state.EX["Wrt_reg_addr"] = self.parsed_instruction.rd
+
+        self.stage = STAGES.EX
+
+    def handle_EX(self):
+        op1 = self.state.EX["Read_data1"]
+        if self.parsed_instruction.control.AluSrc == 0:
+            op2 = self.state.EX["Read_data2"]
+        else:
+            op2 = int(sign_extend_32(self.state.EX["Imm"]),2)
+        self.state.MEM["ALUresult"] = ALU[self.state.EX["alu_op"]](op1,op2)
+
+        
+        self.state.MEM["Wrt_reg_addr"] = self.state.EX["Wrt_reg_addr"]
+        
+        self.state.MEM["Store_data"] = self.state.EX["Read_data2"]
+
+        if self.parsed_instruction.control.Branch == 1:
+            if self.state.MEM["ALUresult"] == 0:
+                # branch condition satisfied
+                self.state.IF["PC"] += self.state.EX["Imm"]
+            else:
+                self.state.IF["PC"] += 4
+            self.stage = STAGES.IF
+        self.stage = STAGES.MEM
+
+    def handle_MEM(self):
+        if self.parsed_instruction.control.MemRead == 1:
+            # read from ALU result as address
+            pass
+        
+        
+        if self.parsed_instruction.control.MemWrite == 1:
+            self.ext_dmem.writeDataMem(self.state.MEM["ALUresult"],self.state.MEM["Store_data"])
+        
+        if self.parsed_instruction.control.MemtoReg == 1:
+            self.state.WB["Wrt_data"]  = int(self.ext_dmem.readDataMem(self.state.MEM["ALUresult"]),2)
+        else:
+            self.state.WB["Wrt_data"] = self.state.MEM["ALUresult"]
+
+        self.state.WB["Wrt_reg_addr"] = self.state.MEM["Wrt_reg_addr"]
+
+        self.stage = STAGES.WB
+
+    def handle_WB(self):
+        if self.parsed_instruction.control.RegWrite:
+            self.myRF.writeRF(self.state.WB["Wrt_reg_addr"],self.state.WB["Wrt_data"])
+        
+        self.state.IF["PC"] += 4
+        self.stage = STAGES.IF
 
     def step(self):
         # Your implementation
 
-        self.halted = True
-        if self.state.IF["nop"]:
-            self.halted = True
-            
+        # find the stage
+        if self.stage == STAGES.IF:
+            self.handle_IF()
+        elif self.stage == STAGES.ID:
+            self.handle_ID()
+        elif self.stage == STAGES.EX:
+            self.handle_EX()
+        elif self.stage == STAGES.MEM:
+            self.handle_MEM()
+        elif self.stage == STAGES.WB:
+            self.handle_WB()
+        else:
+            raise Exception("Invalid stage")
+        
+        
         self.myRF.outputRF(self.cycle) # dump RF
         self.printState(self.nextState, self.cycle) # print states after executing cycle 0, cycle 1, cycle 2 ... 
             
@@ -108,8 +200,8 @@ class SingleStageCore(Core):
 
 class FiveStageCore(Core):
     def __init__(self, ioDir, imem, dmem):
-        super(FiveStageCore, self).__init__(ioDir + "\\FS_", imem, dmem)
-        self.opFilePath = ioDir + "\\StateResult_FS.txt"
+        super(FiveStageCore, self).__init__(os.path.join(ioDir,"FS_"), imem, dmem)
+        self.opFilePath = os.path.join(ioDir,'StateResult_FS.txt')
 
     def step(self):
         # Your implementation
@@ -161,7 +253,8 @@ if __name__ == "__main__":
     parser.add_argument('--iodir', default="", type=str, help='Directory containing the input files.')
     args = parser.parse_args()
 
-    ioDir = os.path.abspath(args.iodir)
+    # ioDir = os.path.abspath(args.iodir)
+    ioDir = '/Users/adityachawla/Desktop/course_work/csa_project/risc-v-simulator/TC1'
     print("IO Directory:", ioDir)
 
     imem = InsMem("Imem", ioDir)
