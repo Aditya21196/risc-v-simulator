@@ -175,23 +175,24 @@ class SingleStageCore(Core):
     def step(self):
         # Your implementation
 
-        # find the stage
-        if self.stage == STAGES.IF and self.state.IF['nop'] == 0:
-            self.handle_IF()
-        elif self.parsed_instruction.instr_type == INSTR_TYPES.HALT:
+        if self.state.IF['nop'] == 1:
             self.halted = True
+        else:
+        # find the stage
+            if self.stage == STAGES.IF and self.state.IF['nop'] == 0:
+                self.handle_IF()
 
-        if self.stage == STAGES.ID:
-            self.handle_ID()
+            if self.stage == STAGES.ID:
+                self.handle_ID()
 
-        if self.stage == STAGES.EX:
-            self.handle_EX()
+            if self.stage == STAGES.EX:
+                self.handle_EX()
 
-        if self.stage == STAGES.MEM:
-            self.handle_MEM()
+            if self.stage == STAGES.MEM:
+                self.handle_MEM()
 
-        if self.stage == STAGES.WB:
-            self.handle_WB()
+            if self.stage == STAGES.WB:
+                self.handle_WB()
         
         
         
