@@ -2,7 +2,7 @@ import os
 import argparse
 from stage_utils import STAGES
 from instruction import Instruction, INSTR_TYPES
-from utils import sign_extend_32
+from utils import sign_safe_binary_conversion, sign_safe_binary_to_int, sign_extend_12
 from alu import ALU
 
 MemSize = 1000 # memory size, in reality, the memory size should be 2^32, but for this lab, for the space resaon, we keep it as this large number, but the memory is still 32-bit addressable.
@@ -39,8 +39,9 @@ class DataMem(object):
         
     def writeDataMem(self, Address, WriteData):
         # write data into byte addressable memory
-
-        pass
+        binary_form = sign_safe_binary_conversion(WriteData)
+        for i in range(4):
+            self.DMem[Address+i] = binary_form[8*i:8*i+8]
                      
     def outputDataMem(self):
         resPath = os.path.join(ioDir, self.id + "_DMEMResult.txt")
@@ -60,7 +61,7 @@ class RegisterFile(object):
          
     def outputRF(self, cycle):
         op = ["-"*70+"\n", "State of RF after executing cycle:" + str(cycle) + "\n"]
-        op.extend([str(val)+"\n" for val in self.Registers])
+        op.extend([str(sign_safe_binary_conversion(val,'0'))+"\n" for val in self.Registers])
         if(cycle == 0): perm = "w"
         else: perm = "a"
         with open(self.outputFile, perm) as file:
@@ -83,7 +84,6 @@ class Core(object):
         self.halted = False
         self.ioDir = ioDir
         self.state = State()
-        self.nextState = State()
         self.ext_imem = imem
         self.ext_dmem = dmem
 
@@ -99,20 +99,23 @@ class SingleStageCore(Core):
         
     def handle_ID(self):
         self.parsed_instruction = Instruction(self.instr) # encapsulates control as well
+        if self.parsed_instruction.instr_type == INSTR_TYPES.HALT:
+            self.halted = True
+            return
 
-        if self.parsed_instruction.rs1:
+        if not self.parsed_instruction.rs1 is None:
             self.state.EX["Read_data1"] = self.myRF.readRF(self.parsed_instruction.rs1)
         
-        if self.parsed_instruction.rs2:
+        if not self.parsed_instruction.rs2 is None:
             self.state.EX["Read_data2"] = self.myRF.readRF(self.parsed_instruction.rs2)
         
-        if self.parsed_instruction.imm:
+        if not self.parsed_instruction.imm is None:
             self.state.EX["Imm"] = self.parsed_instruction.imm
         
-        if self.parsed_instruction.alu_control:
+        if not self.parsed_instruction.alu_control is None:
             self.state.EX["alu_op"] = self.parsed_instruction.alu_control.get_operation()
         
-        if self.parsed_instruction.rd:
+        if not self.parsed_instruction.rd is None:
             self.state.EX["Wrt_reg_addr"] = self.parsed_instruction.rd
 
         self.stage = STAGES.EX
@@ -122,10 +125,9 @@ class SingleStageCore(Core):
         if self.parsed_instruction.control.AluSrc == 0:
             op2 = self.state.EX["Read_data2"]
         else:
-            op2 = int(sign_extend_32(self.state.EX["Imm"]),2)
+            op2 = sign_safe_binary_to_int(sign_extend_12(self.state.EX["Imm"]))
         self.state.MEM["ALUresult"] = ALU[self.state.EX["alu_op"]](op1,op2)
 
-        
         self.state.MEM["Wrt_reg_addr"] = self.state.EX["Wrt_reg_addr"]
         
         self.state.MEM["Store_data"] = self.state.EX["Read_data2"]
@@ -140,19 +142,20 @@ class SingleStageCore(Core):
         self.stage = STAGES.MEM
 
     def handle_MEM(self):
-        if self.parsed_instruction.control.MemRead == 1:
-            # read from ALU result as address
-            pass
-        
         
         if self.parsed_instruction.control.MemWrite == 1:
             self.ext_dmem.writeDataMem(self.state.MEM["ALUresult"],self.state.MEM["Store_data"])
         
         if self.parsed_instruction.control.MemtoReg == 1:
-            self.state.WB["Wrt_data"]  = int(self.ext_dmem.readDataMem(self.state.MEM["ALUresult"]),2)
-        else:
-            self.state.WB["Wrt_data"] = self.state.MEM["ALUresult"]
+            if self.parsed_instruction.control.MemRead == 1:
+                read_addr = self.state.MEM["ALUresult"]
+                read_val = sign_safe_binary_to_int(self.ext_dmem.readDataMem(read_addr))
+                self.state.WB["Wrt_data"] = read_val
 
+        elif self.parsed_instruction.control.MemtoReg == 0:
+            self.state.WB["Wrt_data"] = self.state.MEM["ALUresult"]
+            # self.ext_dmem.writeDataMem(self.state.MEM["ALUresult"],self.state.MEM["Store_data"])
+        
         self.state.WB["Wrt_reg_addr"] = self.state.MEM["Wrt_reg_addr"]
 
         self.stage = STAGES.WB
@@ -170,22 +173,20 @@ class SingleStageCore(Core):
         # find the stage
         if self.stage == STAGES.IF:
             self.handle_IF()
-        elif self.stage == STAGES.ID:
+        if self.stage == STAGES.ID:
             self.handle_ID()
-        elif self.stage == STAGES.EX:
+        if self.stage == STAGES.EX:
             self.handle_EX()
-        elif self.stage == STAGES.MEM:
+        if self.stage == STAGES.MEM:
             self.handle_MEM()
-        elif self.stage == STAGES.WB:
+        if self.stage == STAGES.WB:
             self.handle_WB()
-        else:
-            raise Exception("Invalid stage")
+        
         
         
         self.myRF.outputRF(self.cycle) # dump RF
-        self.printState(self.nextState, self.cycle) # print states after executing cycle 0, cycle 1, cycle 2 ... 
+        self.printState(self.state, self.cycle) # print states after executing cycle 0, cycle 1, cycle 2 ... 
             
-        self.state = self.nextState #The end of the cycle and updates the current state with the values calculated in this cycle
         self.cycle += 1
 
     def printState(self, state, cycle):
@@ -228,9 +229,8 @@ class FiveStageCore(Core):
             self.halted = True
         
         self.myRF.outputRF(self.cycle) # dump RF
-        self.printState(self.nextState, self.cycle) # print states after executing cycle 0, cycle 1, cycle 2 ... 
+        self.printState(self.state, self.cycle) # print states after executing cycle 0, cycle 1, cycle 2 ... 
         
-        self.state = self.nextState #The end of the cycle and updates the current state with the values calculated in this cycle
         self.cycle += 1
 
     def printState(self, state, cycle):
