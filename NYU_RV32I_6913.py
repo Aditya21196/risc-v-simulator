@@ -92,6 +92,7 @@ class SingleStageCore(Core):
         super(SingleStageCore, self).__init__(os.path.join(ioDir,"SS_"), imem, dmem)
         self.opFilePath = os.path.join(ioDir,"StateResult_SS.txt")
         self.stage = STAGES.IF
+        self.last_write = None
 
     def handle_IF(self):
         self.instr = self.ext_imem.readInstr(self.state.IF["PC"])
@@ -162,8 +163,18 @@ class SingleStageCore(Core):
 
     def handle_WB(self):
         if self.parsed_instruction.control.RegWrite:
+            if self.last_write == self.state.WB["Wrt_reg_addr"]:
+                self.state.IF["nop"] = 1
+                self.last_write = None
+                return
+            else:
+                self.state.IF["nop"] = 0
+
             self.myRF.writeRF(self.state.WB["Wrt_reg_addr"],self.state.WB["Wrt_data"])
-        
+            self.last_write = self.state.WB["Wrt_reg_addr"]
+        else:
+            self.last_write = None
+
         self.state.IF["PC"] += 4
         self.stage = STAGES.IF
 
