@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------
 State after executing cycle: 0
-IF.nop: False
+IF.nop: 0
 IF.PC: 0
 ID.nop: False
 ID.Instr: 0

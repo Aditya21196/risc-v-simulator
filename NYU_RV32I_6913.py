@@ -69,7 +69,7 @@ class RegisterFile(object):
 
 class State(object):
     def __init__(self):
-        self.IF = {"nop": False, "PC": 0}
+        self.IF = {"nop": 0, "PC": 0}
         self.ID = {"nop": False, "Instr": 0}
         self.EX = {"nop": False, "Read_data1": 0, "Read_data2": 0, "Imm": 0, "Rs": 0, "Rt": 0, "Wrt_reg_addr": 0, "is_I_type": False, "rd_mem": 0, 
                    "wrt_mem": 0, "alu_op": 0, "wrt_enable": 0}
@@ -92,16 +92,19 @@ class SingleStageCore(Core):
         super(SingleStageCore, self).__init__(os.path.join(ioDir,"SS_"), imem, dmem)
         self.opFilePath = os.path.join(ioDir,"StateResult_SS.txt")
         self.stage = STAGES.IF
-        self.last_write = None
 
     def handle_IF(self):
+        if self.state.IF['nop'] == 1:
+            self.state.IF['nop'] = 0
+            return
         self.instr = self.ext_imem.readInstr(self.state.IF["PC"])
         self.stage = STAGES.ID
         
     def handle_ID(self):
         self.parsed_instruction = Instruction(self.instr) # encapsulates control as well
         if self.parsed_instruction.instr_type == INSTR_TYPES.HALT:
-            self.halted = True
+            self.state.IF['nop'] = 1
+            self.stage = STAGES.IF
             return
 
         if not self.parsed_instruction.rs1 is None:
@@ -163,17 +166,8 @@ class SingleStageCore(Core):
 
     def handle_WB(self):
         if self.parsed_instruction.control.RegWrite:
-            if self.last_write == self.state.WB["Wrt_reg_addr"]:
-                self.state.IF["nop"] = 1
-                self.last_write = None
-                return
-            else:
-                self.state.IF["nop"] = 0
-
             self.myRF.writeRF(self.state.WB["Wrt_reg_addr"],self.state.WB["Wrt_data"])
-            self.last_write = self.state.WB["Wrt_reg_addr"]
-        else:
-            self.last_write = None
+            
 
         self.state.IF["PC"] += 4
         self.stage = STAGES.IF
@@ -182,14 +176,20 @@ class SingleStageCore(Core):
         # Your implementation
 
         # find the stage
-        if self.stage == STAGES.IF:
+        if self.stage == STAGES.IF and self.state.IF['nop'] == 0:
             self.handle_IF()
+        elif self.parsed_instruction.instr_type == INSTR_TYPES.HALT:
+            self.halted = True
+
         if self.stage == STAGES.ID:
             self.handle_ID()
+
         if self.stage == STAGES.EX:
             self.handle_EX()
+
         if self.stage == STAGES.MEM:
             self.handle_MEM()
+
         if self.stage == STAGES.WB:
             self.handle_WB()
         
