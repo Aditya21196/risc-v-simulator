@@ -31,7 +31,8 @@ INSTR_TYPE_TO_CONTROL = {
         MemWrite = 0,
         Branch = 0,
         AluOp1 = 1,
-        AluOp0 = 0
+        AluOp0 = 0,
+        Jump = 0
     ),
     INSTR_TYPES.I: Control(
         AluSrc = 1,
@@ -41,7 +42,8 @@ INSTR_TYPE_TO_CONTROL = {
         MemWrite = 0,
         Branch = 0,
         AluOp1 = 0,
-        AluOp0 = 0
+        AluOp0 = 0,
+        Jump = 0
     ),
     INSTR_TYPES.LOAD_I: Control(
         AluSrc = 1,
@@ -51,7 +53,8 @@ INSTR_TYPE_TO_CONTROL = {
         MemWrite = 0,
         Branch = 0,
         AluOp1 = 0,
-        AluOp0 = 0
+        AluOp0 = 0,
+        Jump = 0
     ),
     INSTR_TYPES.S: Control(
         AluSrc = 1,
@@ -61,7 +64,8 @@ INSTR_TYPE_TO_CONTROL = {
         MemWrite = 1,
         Branch = 0,
         AluOp1 = 0,
-        AluOp0 = 0
+        AluOp0 = 0,
+        Jump = 0
     ),
     INSTR_TYPES.B: Control(
         AluSrc = 0,
@@ -71,6 +75,18 @@ INSTR_TYPE_TO_CONTROL = {
         MemWrite = 0,
         Branch = 1,
         AluOp1 = 0,
-        AluOp0 = 1
+        AluOp0 = 1,
+        Jump = 0
+    ),
+    INSTR_TYPES.J: Control(
+        AluSrc = 1,
+        MemtoReg = 0,
+        RegWrite = 0,
+        MemRead = 0,
+        MemWrite = 0,
+        Branch = 0,
+        AluOp1 = 0,
+        AluOp0 = 0,
+        Jump = 1
     )
 }

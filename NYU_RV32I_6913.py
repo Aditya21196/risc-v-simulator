@@ -38,10 +38,11 @@ class DataMem(object):
         return data_binary
         
     def writeDataMem(self, Address, WriteData):
-        # write data into byte addressable memory
+        #write data into byte addressable memory
         binary_form = sign_safe_binary_conversion(WriteData)
         for i in range(4):
             self.DMem[Address+i] = binary_form[8*i:8*i+8]
+        
                      
     def outputDataMem(self):
         resPath = os.path.join(ioDir, self.id + "_DMEMResult.txt")
@@ -61,7 +62,7 @@ class RegisterFile(object):
          
     def outputRF(self, cycle):
         op = ["-"*70+"\n", "State of RF after executing cycle:" + str(cycle) + "\n"]
-        op.extend([str(sign_safe_binary_conversion(val,'0'))+"\n" for val in self.Registers])
+        op.extend([str(sign_safe_binary_conversion(val))+"\n" for val in self.Registers])
         if(cycle == 0): perm = "w"
         else: perm = "a"
         with open(self.outputFile, perm) as file:
@@ -107,6 +108,7 @@ class SingleStageCore(Core):
             self.stage = STAGES.IF
             return
 
+
         if not self.parsed_instruction.rs1 is None:
             self.state.EX["Read_data1"] = self.myRF.readRF(self.parsed_instruction.rs1)
         
@@ -116,11 +118,28 @@ class SingleStageCore(Core):
         if not self.parsed_instruction.imm is None:
             self.state.EX["Imm"] = self.parsed_instruction.imm
         
+        
+
         if not self.parsed_instruction.alu_control is None:
             self.state.EX["alu_op"] = self.parsed_instruction.alu_control.get_operation()
         
         if not self.parsed_instruction.rd is None:
             self.state.EX["Wrt_reg_addr"] = self.parsed_instruction.rd
+
+        if self.parsed_instruction.control.Jump == 1:
+            self.myRF.writeRF(self.state.EX["Wrt_reg_addr"],self.state.IF["PC"]+4)
+            self.state.IF["PC"] = self.state.IF["PC"] + sign_safe_binary_to_int(sign_extend_12(self.state.EX["Imm"]))
+            self.stage = STAGES.IF
+            return
+
+        if self.parsed_instruction.control.Branch == 1:
+            rs_equal = (self.state.EX["Read_data1"] == self.state.EX["Read_data2"])
+            if (self.parsed_instruction.funct3 == '000' and rs_equal) or (self.parsed_instruction.funct3 == '001' and not rs_equal):
+                self.state.IF["PC"] += sign_safe_binary_to_int(sign_extend_12(self.state.EX["Imm"]))
+            else:
+                self.state.IF["PC"] += 4
+            self.stage = STAGES.IF
+            return
 
         self.stage = STAGES.EX
 
@@ -130,19 +149,13 @@ class SingleStageCore(Core):
             op2 = self.state.EX["Read_data2"]
         else:
             op2 = sign_safe_binary_to_int(sign_extend_12(self.state.EX["Imm"]))
+
         self.state.MEM["ALUresult"] = ALU[self.state.EX["alu_op"]](op1,op2)
 
         self.state.MEM["Wrt_reg_addr"] = self.state.EX["Wrt_reg_addr"]
         
         self.state.MEM["Store_data"] = self.state.EX["Read_data2"]
 
-        if self.parsed_instruction.control.Branch == 1:
-            if self.state.MEM["ALUresult"] == 0:
-                # branch condition satisfied
-                self.state.IF["PC"] += self.state.EX["Imm"]
-            else:
-                self.state.IF["PC"] += 4
-            self.stage = STAGES.IF
         self.stage = STAGES.MEM
 
     def handle_MEM(self):
@@ -167,7 +180,6 @@ class SingleStageCore(Core):
     def handle_WB(self):
         if self.parsed_instruction.control.RegWrite:
             self.myRF.writeRF(self.state.WB["Wrt_reg_addr"],self.state.WB["Wrt_data"])
-            
 
         self.state.IF["PC"] += 4
         self.stage = STAGES.IF

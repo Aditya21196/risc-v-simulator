@@ -49,9 +49,8 @@ imm:{self.imm}
         return self.instr[31-i]
 
     def parse_control(self):
-        if self.instr_type != INSTR_TYPES.J:
-            self.control = INSTR_TYPE_TO_CONTROL[self.instr_type]
-            self.alu_control = AluControl(self.control.AluOp0,self.control.AluOp1,self.funct3,self.funct7,self.instr_type)
+        self.control = INSTR_TYPE_TO_CONTROL[self.instr_type]
+        self.alu_control = AluControl(self.control.AluOp0,self.control.AluOp1,self.funct3,self.funct7,self.instr_type)
         
 
     def get_alu_control(self):
