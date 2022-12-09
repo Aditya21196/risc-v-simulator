@@ -1,9 +1,9 @@
 ----------------------------------------------------------------------
 State after executing cycle: 0
 IF.nop: 0
-IF.PC: 0
+IF.PC: 4
 ID.nop: False
-ID.Instr: 0
+ID.Instr: None
 EX.nop: False
 EX.Read_data1: 0
 EX.Read_data2: 0
@@ -16,6 +16,7 @@ EX.rd_mem: 0
 EX.wrt_mem: 0
 EX.alu_op: 0
 EX.wrt_enable: 0
+EX.parsed_instr: None
 MEM.nop: False
 MEM.ALUresult: 0
 MEM.Store_data: 0
@@ -25,9 +26,91 @@ MEM.Wrt_reg_addr: 0
 MEM.rd_mem: 0
 MEM.wrt_mem: 0
 MEM.wrt_enable: 0
+MEM.parsed_instr: None
 WB.nop: False
 WB.Wrt_data: 0
 WB.Rs: 0
 WB.Rt: 0
 WB.Wrt_reg_addr: 0
 WB.wrt_enable: 0
+WB.parsed_instr: None
+----------------------------------------------------------------------
+State after executing cycle: 1
+IF.nop: 0
+IF.PC: 8
+ID.nop: False
+ID.Instr: None
+EX.nop: False
+EX.Read_data1: 0
+EX.Read_data2: 0
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 0
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 0
+EX.wrt_enable: 0
+EX.parsed_instr: None
+MEM.nop: False
+MEM.ALUresult: 0
+MEM.Store_data: 0
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 0
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: None
+WB.nop: False
+WB.Wrt_data: 0
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 0
+WB.wrt_enable: 0
+WB.parsed_instr: None
+----------------------------------------------------------------------
+State after executing cycle: 2
+IF.nop: 0
+IF.PC: 12
+ID.nop: False
+ID.Instr: None
+EX.nop: False
+EX.Read_data1: 0
+EX.Read_data2: 0
+EX.Imm: 000000000000
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 1
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:1,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000000
+        
+MEM.nop: False
+MEM.ALUresult: 0
+MEM.Store_data: 0
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 0
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: None
+WB.nop: False
+WB.Wrt_data: 0
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 0
+WB.wrt_enable: 0
+WB.parsed_instr: None
