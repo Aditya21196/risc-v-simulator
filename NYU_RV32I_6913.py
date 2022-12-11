@@ -16,15 +16,10 @@ class FiveStageCore(Core):
 
     def handle_IF(self):
         # process new instruction
-        if self.state.IF["halted"]:
+        if self.state.ID["halted"]:
             return
 
         self.buffer.ID["Instr"] = self.ext_imem.readInstr(self.state.IF["PC"])
-
-        if self.buffer.ID["Instr"][-7:] == '1111111':
-            self.state.IF["halted"] = True
-            self.state.ID["halted"] = True
-            self.state.IF["nop"] = 1
 
         self.state.IF["PC"] += 4
 
@@ -42,9 +37,10 @@ class FiveStageCore(Core):
 
         parsed_instruction = Instruction(self.buffer.ID["Instr"])
 
-        # TODO: Improve HALT handling
         if parsed_instruction.instr_type == INSTR_TYPES.HALT:
-            self.halted = True
+            self.state.ID["halted"] = True
+            self.state.EX["halted"] = True
+            self.state.ID["nop"] = 1
             return
 
         if self.check_load_use_data(parsed_instruction):
@@ -66,6 +62,13 @@ class FiveStageCore(Core):
         
         if not parsed_instruction.rd is None:
             self.buffer.EX["Wrt_reg_addr"] = parsed_instruction.rd
+
+        if parsed_instruction.control.Jump == 1:
+            self.myRF.writeRF(parsed_instruction.rd,self.state.IF["PC"]+4)
+            self.state.IF["PC"] = self.state.IF["PC"] + sign_safe_binary_to_int(sign_extend_12(self.state.EX["Imm"]))
+            self.state.EX["nop"] = 1
+            return
+
             
 
     def check_load_use_data(self,parsed_instruction):
@@ -80,7 +83,7 @@ class FiveStageCore(Core):
     def check_forwarding(self):
         forwardA,forwardB = 0b00,0b00
 
-        if self.buffer.WB["parsed_instr"] and self.buffer.EX["parsed_instr"].control.RegWrite:
+        if self.buffer.WB["parsed_instr"] and self.buffer.EX["parsed_instr"] and self.buffer.EX["parsed_instr"].control.RegWrite:
             if self.buffer.MEM["parsed_instr"] and self.buffer.MEM["parsed_instr"].rd and self.buffer.MEM["parsed_instr"].rd == self.buffer.EX["parsed_instr"].rs1:
                 forwardA = 0b10
             elif self.buffer.WB["parsed_instr"].rd and self.buffer.WB["parsed_instr"].rd == self.buffer.EX["parsed_instr"].rs1:
@@ -132,6 +135,16 @@ class FiveStageCore(Core):
 
         if self.state.EX["parsed_instr"]:
             self.buffer.MEM["parsed_instr"] = self.state.EX["parsed_instr"]
+
+            if self.state.EX["parsed_instr"].control.Branch == 1:
+                rs_equal = (self.state.EX["Read_data1"] == self.state.EX["Read_data2"])
+                if (self.state.EX["parsed_instr"].funct3 == '000' and rs_equal) or (self.state.EX["parsed_instr"].funct3 == '001' and not rs_equal):
+                    val = self.state.IF["PC"] + sign_safe_binary_to_int(sign_extend_12(self.state.EX["Imm"]))
+                    self.state.IF = val
+
+                self.state.MEM["nop"] = 1
+                return
+
 
             op1 = self.state.EX["Read_data1"]
             if self.state.EX["parsed_instr"].control.AluSrc == 0:
@@ -225,7 +238,7 @@ class FiveStageCore(Core):
         self.handle_IF()
 
         
-        if self.state.IF["nop"] and self.state.ID["nop"] and self.state.EX["nop"] and self.state.MEM["nop"] and self.state.WB["nop"]:
+        if self.state.ID["halted"] and self.state.EX["halted"] and self.state.MEM["halted"] and self.state.WB["halted"]:
             self.halted = True
         
         self.myRF.outputRF(self.cycle) # dump RF
@@ -254,7 +267,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # ioDir = os.path.abspath(args.iodir)
-    ioDir = '/Users/adityachawla/Desktop/course_work/csa_project/risc-v-simulator/TC1'
+    ioDir = '/Users/adityachawla/Desktop/course_work/csa_project/risc-v-simulator/TC2'
     print("IO Directory:", ioDir)
 
     imem = InsMem("Imem", ioDir)
