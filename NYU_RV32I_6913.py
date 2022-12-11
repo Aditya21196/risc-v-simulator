@@ -15,59 +15,104 @@ class FiveStageCore(Core):
         self.buffer = State() # reuse state class because it encapsulates everything already
 
     def handle_IF(self):
-        if self.state.IF['nop'] == 1:
-            self.state.IF['nop'] = 0
-            return
-
         # process new instruction
         self.buffer.ID["Instr"] = self.ext_imem.readInstr(self.state.IF["PC"])
         self.state.IF["PC"] += 4
 
+
     def handle_ID(self):
-        # TODO: handle stalling
-
         self.state.ID["Instr"] = self.buffer.ID["Instr"]
+        
+        if not self.state.ID["Instr"]:
+            return
 
-        if self.state.ID["Instr"]:
-            parsed_instruction = Instruction(self.buffer.ID["Instr"])
+        parsed_instruction = Instruction(self.buffer.ID["Instr"])
 
-            # TODO: handle forwarding or stalling?
-            if parsed_instruction.instr_type == INSTR_TYPES.HALT:
-                self.halted = True
-                return
+        # TODO: Improve HALT handling
+        if parsed_instruction.instr_type == INSTR_TYPES.HALT:
+            self.halted = True
+            return
 
-            # pass the instruction itself to the buffer along with state relevant data
-            self.buffer.EX["parsed_instr"] = parsed_instruction
-            if not parsed_instruction.rs1 is None:
-                self.buffer.EX["Read_data1"] = self.myRF.readRF(parsed_instruction.rs1)
-            
-            if not parsed_instruction.rs2 is None:
-                self.buffer.EX["Read_data2"] = self.myRF.readRF(self.parsed_instruction.rs2)
-            
-            if not parsed_instruction.imm is None:
-                self.buffer.EX["Imm"] = parsed_instruction.imm
-            
-            if not parsed_instruction.alu_control is None:
-                self.buffer.EX["alu_op"] = parsed_instruction.alu_control.get_operation()
-            
-            if not parsed_instruction.rd is None:
-                self.buffer.EX["Wrt_reg_addr"] = parsed_instruction.rd
-            
-            # TODO: Handle Jump and Branch
-            
-            # self.state.ID["Instr"] = None
+        if self.check_load_use_data(parsed_instruction):
+            return
 
-    
+        # pass the instruction itself to the buffer along with state relevant data
+        self.buffer.EX["parsed_instr"] = parsed_instruction
+        if not parsed_instruction.rs1 is None:
+            self.buffer.EX["Read_data1"] = self.myRF.readRF(parsed_instruction.rs1)
+        
+        if not parsed_instruction.rs2 is None:
+            self.buffer.EX["Read_data2"] = self.myRF.readRF(parsed_instruction.rs2)
+        
+        if not parsed_instruction.imm is None:
+            self.buffer.EX["Imm"] = parsed_instruction.imm
+        
+        if not parsed_instruction.alu_control is None:
+            self.buffer.EX["alu_op"] = parsed_instruction.alu_control.get_operation()
+        
+        if not parsed_instruction.rd is None:
+            self.buffer.EX["Wrt_reg_addr"] = parsed_instruction.rd
+            
+
+    def check_load_use_data(self,parsed_instruction):
+        if self.buffer.EX["parsed_instr"] and self.buffer.EX["parsed_instr"].control.MemRead:
+            if (self.buffer.EX["parsed_instr"].rd == parsed_instruction.rs1) or (self.buffer.EX["parsed_instr"].rd == parsed_instruction.rs2):
+                self.state.IF["PC"] -= 4
+                self.state.EX["nop"] = 1
+                
+                return True
+        return False
+
+    def check_forwarding(self):
+        forwardA,forwardB = 0b00,0b00
+
+        if self.buffer.WB["parsed_instr"] and self.buffer.EX["parsed_instr"].control.RegWrite:
+            if self.buffer.MEM["parsed_instr"] and self.buffer.MEM["parsed_instr"].rd and self.buffer.MEM["parsed_instr"].rd == self.buffer.EX["parsed_instr"].rs1:
+                forwardA = 0b10
+            elif self.buffer.WB["parsed_instr"].rd and self.buffer.WB["parsed_instr"].rd == self.buffer.EX["parsed_instr"].rs1:
+                forwardA = 0b01
+        
+            if self.buffer.MEM["parsed_instr"] and self.buffer.MEM["parsed_instr"].rd and self.buffer.MEM["parsed_instr"].rd == self.buffer.EX["parsed_instr"].rs2:
+                forwardB = 0b10
+            elif self.buffer.WB["parsed_instr"].rd and self.buffer.WB["parsed_instr"].rd == self.buffer.EX["parsed_instr"].rs2:
+                forwardB = 0b01
+        
+        return forwardA,forwardB
+
     def handle_EX(self):
-        # TODO: handle stalling
+        if self.state.EX["nop"] == 1:
+            self.buffer.reset_EX()
+            self.state.MEM["nop"] = 1
+            self.state.EX["nop"] = 0
+            return
+
+
+        forwardA,forwardB = self.check_forwarding()
+
         self.state.EX["parsed_instr"] = self.buffer.EX["parsed_instr"]
+
         self.state.EX["Read_data1"] = self.buffer.EX["Read_data1"]
+
         self.state.EX["Read_data2"] = self.buffer.EX["Read_data2"]
+        
+
         self.state.EX["Imm"] = self.buffer.EX["Imm"]
         self.state.EX["alu_op"] = self.buffer.EX["alu_op"]
         self.state.EX["Wrt_reg_addr"] = self.buffer.EX["Wrt_reg_addr"]
 
+        if forwardA == 0b01:
+            self.state.EX["Read_data1"] = self.buffer.WB["Wrt_data"]
+        elif forwardA == 0b10:
+            self.state.EX["Read_data1"] = self.buffer.MEM["ALUresult"]
+            
+        if forwardB == 0b01:
+            self.state.EX["Read_data2"] = self.buffer.WB["Wrt_data"]
+        elif forwardB == 0b10:
+            self.state.EX["Read_data2"] = self.buffer.MEM["ALUresult"]
+
         if self.state.EX["parsed_instr"]:
+            self.buffer.MEM["parsed_instr"] = self.state.EX["parsed_instr"]
+
             op1 = self.state.EX["Read_data1"]
             if self.state.EX["parsed_instr"].control.AluSrc == 0:
                 op2 = self.state.EX["Read_data2"]
@@ -81,17 +126,23 @@ class FiveStageCore(Core):
             self.buffer.MEM["Store_data"] = self.state.EX["Read_data2"]
 
 
-        
-
     def handle_MEM(self):
-        # TODO: handle stalling
+        if self.state.MEM["nop"] == 1:
+            self.buffer.reset_MEM()
+            self.state.WB["nop"] = 1
+            self.state.MEM["nop"] = 0
+            return
 
         self.state.MEM["parsed_instr"] = self.buffer.MEM["parsed_instr"]
         self.state.MEM["ALUresult"] = self.buffer.MEM["ALUresult"]
         self.state.MEM["Store_data"] = self.buffer.MEM["Store_data"]
         self.state.MEM["Wrt_reg_addr"] = self.buffer.MEM["Wrt_reg_addr"]
 
+
         if self.state.MEM["parsed_instr"]:
+
+            self.buffer.WB["parsed_instr"] = self.state.MEM["parsed_instr"]
+
             if self.state.MEM["parsed_instr"].control.MemWrite == 1:
                 self.ext_dmem.writeDataMem(self.state.MEM["ALUresult"],self.state.MEM["Store_data"])
             
@@ -106,10 +157,17 @@ class FiveStageCore(Core):
             
             self.buffer.WB["Wrt_reg_addr"] = self.state.MEM["Wrt_reg_addr"]
 
-    
 
     def handle_WB(self):
-        # TODO: handle stalling
+        if self.state.WB["nop"] == 1:
+            self.buffer.reset_WB()
+            self.state.WB["nop"] = 0
+            return
+
+        self.state.WB["parsed_instr"] = self.buffer.WB["parsed_instr"]
+        self.state.WB["Wrt_reg_addr"] = self.buffer.WB["Wrt_reg_addr"]
+        self.state.WB["Wrt_data"] = self.buffer.WB["Wrt_data"]
+        
         if self.state.WB["parsed_instr"]:
             if self.state.WB["parsed_instr"].control.RegWrite:
                 self.myRF.writeRF(self.state.WB["Wrt_reg_addr"],self.state.WB["Wrt_data"])

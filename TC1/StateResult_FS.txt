@@ -39,7 +39,7 @@ State after executing cycle: 1
 IF.nop: 0
 IF.PC: 8
 ID.nop: False
-ID.Instr: None
+ID.Instr: 00000000000000000000000010000011
 EX.nop: False
 EX.Read_data1: 0
 EX.Read_data2: 0
@@ -75,7 +75,7 @@ State after executing cycle: 2
 IF.nop: 0
 IF.PC: 12
 ID.nop: False
-ID.Instr: None
+ID.Instr: 00000000010000000000000100000011
 EX.nop: False
 EX.Read_data1: 0
 EX.Read_data2: 0
@@ -114,3 +114,235 @@ WB.Rt: 0
 WB.Wrt_reg_addr: 0
 WB.wrt_enable: 0
 WB.parsed_instr: None
+----------------------------------------------------------------------
+State after executing cycle: 3
+IF.nop: 0
+IF.PC: 12
+ID.nop: False
+ID.Instr: 00000000001000001000000110110011
+EX.nop: 1
+EX.Read_data1: 0
+EX.Read_data2: 0
+EX.Imm: 000000000100
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 2
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000100
+        
+MEM.nop: False
+MEM.ALUresult: 0
+MEM.Store_data: 0
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 1
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:1,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000000
+        
+WB.nop: False
+WB.Wrt_data: 0
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 0
+WB.wrt_enable: 0
+WB.parsed_instr: None
+----------------------------------------------------------------------
+State after executing cycle: 4
+IF.nop: 0
+IF.PC: 16
+ID.nop: False
+ID.Instr: 00000000001000001000000110110011
+EX.nop: 0
+EX.Read_data1: 0
+EX.Read_data2: 0
+EX.Imm: 000000000100
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 2
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000100
+        
+MEM.nop: 1
+MEM.ALUresult: 4
+MEM.Store_data: 0
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 2
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000100
+        
+WB.nop: False
+WB.Wrt_data: 5
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 1
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:1,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000000
+        
+----------------------------------------------------------------------
+State after executing cycle: 5
+IF.nop: 0
+IF.PC: 20
+ID.nop: False
+ID.Instr: 01000000001000001000001000110011
+EX.nop: 0
+EX.Read_data1: 5
+EX.Read_data2: 3
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 3
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:3,
+funct7:0000000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+MEM.nop: 0
+MEM.ALUresult: 4
+MEM.Store_data: 0
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 2
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000100
+        
+WB.nop: 1
+WB.Wrt_data: 3
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 2
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000100
+        
+----------------------------------------------------------------------
+State after executing cycle: 6
+IF.nop: 0
+IF.PC: 24
+ID.nop: False
+ID.Instr: 00000000001100000010010000100011
+EX.nop: 0
+EX.Read_data1: 5
+EX.Read_data2: 3
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 4
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 6
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:4,
+funct7:0100000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+MEM.nop: 0
+MEM.ALUresult: 8
+MEM.Store_data: 3
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 3
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:3,
+funct7:0000000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+WB.nop: 0
+WB.Wrt_data: 3
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 2
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000100
+        

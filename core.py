@@ -7,11 +7,13 @@ from instruction import Instruction, INSTR_TYPES
 
 class State(object):
     def __init__(self):
-        self.IF = {"nop": 0, "PC": 0}
-        self.ID = {
-            "nop": False,
-            "Instr":None
-            }
+        self.reset_ID()
+        self.reset_IF()
+        self.reset_EX()
+        self.reset_MEM()
+        self.reset_WB()
+
+    def reset_EX(self):
         self.EX = {
             "nop": False,
             "Read_data1": 0, 
@@ -26,6 +28,17 @@ class State(object):
             "wrt_enable": 0,
             "parsed_instr":None
         }
+    
+    def reset_IF(self):
+        self.IF = {"nop": 0, "PC": 0}
+
+    def reset_ID(self):
+        self.ID = {
+            "nop": False,
+            "Instr":None
+            }
+
+    def reset_MEM(self):
         self.MEM = {
             "nop": False,
             "ALUresult": 0,
@@ -38,6 +51,8 @@ class State(object):
             "wrt_enable": 0,
             "parsed_instr":None
         }
+
+    def reset_WB(self):
         self.WB = {
             "nop": False,
             "Wrt_data": 0,
@@ -47,6 +62,7 @@ class State(object):
             "wrt_enable": 0,
             "parsed_instr":None
         }
+    
 
 
 class InsMem(object):
