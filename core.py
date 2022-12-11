@@ -26,16 +26,18 @@ class State(object):
             "wrt_mem": 0,
             "alu_op": 0,
             "wrt_enable": 0,
-            "parsed_instr":None
+            "parsed_instr":None,
+            "halted":False
         }
     
     def reset_IF(self):
-        self.IF = {"nop": 0, "PC": 0}
+        self.IF = {"nop": 0, "PC": 0,"halted":False}
 
     def reset_ID(self):
         self.ID = {
             "nop": False,
-            "Instr":None
+            "Instr":None,
+            "halted":False
             }
 
     def reset_MEM(self):
@@ -49,7 +51,8 @@ class State(object):
             "rd_mem": 0, 
             "wrt_mem": 0,
             "wrt_enable": 0,
-            "parsed_instr":None
+            "parsed_instr":None,
+            "halted":False
         }
 
     def reset_WB(self):
@@ -60,7 +63,8 @@ class State(object):
             "Rt": 0,
             "Wrt_reg_addr": 0,
             "wrt_enable": 0,
-            "parsed_instr":None
+            "parsed_instr":None,
+            "halted":False
         }
     
 
@@ -116,10 +120,11 @@ class RegisterFile(object):
         return self.Registers[Reg_addr]
     
     def writeRF(self, Reg_addr, Wrt_reg_data):
-       self.Registers[Reg_addr] = Wrt_reg_data
+        if Reg_addr:
+            self.Registers[Reg_addr] = Wrt_reg_data
          
     def outputRF(self, cycle):
-        op = ["-"*70+"\n", "State of RF after executing cycle:" + str(cycle) + "\n"]
+        op = ["State of RF after executing cycle:\t" + str(cycle) + "\n"]
         op.extend([str(sign_safe_binary_conversion(val))+"\n" for val in self.Registers])
         if(cycle == 0): perm = "w"
         else: perm = "a"

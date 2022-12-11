@@ -16,11 +16,25 @@ class FiveStageCore(Core):
 
     def handle_IF(self):
         # process new instruction
+        if self.state.IF["halted"]:
+            return
+
         self.buffer.ID["Instr"] = self.ext_imem.readInstr(self.state.IF["PC"])
+
+        if self.buffer.ID["Instr"][-7:] == '1111111':
+            self.state.IF["halted"] = True
+            self.state.ID["halted"] = True
+            self.state.IF["nop"] = 1
+
         self.state.IF["PC"] += 4
 
 
     def handle_ID(self):
+        if self.state.ID["halted"]:
+            self.state.EX["halted"] = True
+            self.state.ID["nop"] = 1
+            return
+
         self.state.ID["Instr"] = self.buffer.ID["Instr"]
         
         if not self.state.ID["Instr"]:
@@ -80,6 +94,12 @@ class FiveStageCore(Core):
         return forwardA,forwardB
 
     def handle_EX(self):
+        
+        if self.state.EX["halted"]:
+            self.state.MEM["halted"] = True
+            self.state.EX["nop"] = 1
+            return
+
         if self.state.EX["nop"] == 1:
             self.buffer.reset_EX()
             self.state.MEM["nop"] = 1
@@ -127,6 +147,12 @@ class FiveStageCore(Core):
 
 
     def handle_MEM(self):
+
+        if self.state.MEM["halted"]:
+            self.state.WB["halted"] = True
+            self.state.MEM["nop"] = 1
+            return
+
         if self.state.MEM["nop"] == 1:
             self.buffer.reset_MEM()
             self.state.WB["nop"] = 1
@@ -159,6 +185,11 @@ class FiveStageCore(Core):
 
 
     def handle_WB(self):
+
+        if self.state.WB["halted"]:
+            self.state.WB["nop"] = 1
+            return
+
         if self.state.WB["nop"] == 1:
             self.buffer.reset_WB()
             self.state.WB["nop"] = 0
@@ -203,7 +234,7 @@ class FiveStageCore(Core):
         self.cycle += 1
 
     def printState(self, state, cycle):
-        printstate = ["-"*70+"\n", "State after executing cycle: " + str(cycle) + "\n"]
+        printstate = [ "State after executing cycle:\t" + str(cycle) + "\n"]
         printstate.extend(["IF." + key + ": " + str(val) + "\n" for key, val in state.IF.items()])
         printstate.extend(["ID." + key + ": " + str(val) + "\n" for key, val in state.ID.items()])
         printstate.extend(["EX." + key + ": " + str(val) + "\n" for key, val in state.EX.items()])
