@@ -1,9 +1,10 @@
-----------------------------------------------------------------------
-State after executing cycle: 0
-IF.nop: False
-IF.PC: 0
+State after executing cycle:	0
+IF.nop: 0
+IF.PC: 4
+IF.halted: False
 ID.nop: False
-ID.Instr: 0
+ID.Instr: None
+ID.halted: False
 EX.nop: False
 EX.Read_data1: 0
 EX.Read_data2: 0
@@ -16,6 +17,8 @@ EX.rd_mem: 0
 EX.wrt_mem: 0
 EX.alu_op: 0
 EX.wrt_enable: 0
+EX.parsed_instr: None
+EX.halted: False
 MEM.nop: False
 MEM.ALUresult: 0
 MEM.Store_data: 0
@@ -25,9 +28,2845 @@ MEM.Wrt_reg_addr: 0
 MEM.rd_mem: 0
 MEM.wrt_mem: 0
 MEM.wrt_enable: 0
+MEM.parsed_instr: None
+MEM.halted: False
 WB.nop: False
 WB.Wrt_data: 0
 WB.Rs: 0
 WB.Rt: 0
 WB.Wrt_reg_addr: 0
 WB.wrt_enable: 0
+WB.parsed_instr: None
+WB.halted: False
+State after executing cycle:	1
+IF.nop: 0
+IF.PC: 8
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000000000000000000010000011
+ID.halted: False
+EX.nop: False
+EX.Read_data1: 0
+EX.Read_data2: 0
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 0
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 0
+EX.wrt_enable: 0
+EX.parsed_instr: None
+EX.halted: False
+MEM.nop: False
+MEM.ALUresult: 0
+MEM.Store_data: 0
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 0
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: None
+MEM.halted: False
+WB.nop: False
+WB.Wrt_data: 0
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 0
+WB.wrt_enable: 0
+WB.parsed_instr: None
+WB.halted: False
+State after executing cycle:	2
+IF.nop: 0
+IF.PC: 12
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000010000000000000100000011
+ID.halted: False
+EX.nop: False
+EX.Read_data1: 0
+EX.Read_data2: 0
+EX.Imm: 000000000000
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 1
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:1,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000000
+        
+EX.halted: False
+MEM.nop: False
+MEM.ALUresult: 0
+MEM.Store_data: 0
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 0
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: None
+MEM.halted: False
+WB.nop: False
+WB.Wrt_data: 0
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 0
+WB.wrt_enable: 0
+WB.parsed_instr: None
+WB.halted: False
+State after executing cycle:	3
+IF.nop: 0
+IF.PC: 12
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000001000001000000110110011
+ID.halted: False
+EX.nop: 1
+EX.Read_data1: 0
+EX.Read_data2: 0
+EX.Imm: 000000000100
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 2
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000100
+        
+EX.halted: False
+MEM.nop: False
+MEM.ALUresult: 0
+MEM.Store_data: 0
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 1
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:1,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000000
+        
+MEM.halted: False
+WB.nop: False
+WB.Wrt_data: 0
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 0
+WB.wrt_enable: 0
+WB.parsed_instr: None
+WB.halted: False
+State after executing cycle:	4
+IF.nop: 0
+IF.PC: 16
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000001000001000000110110011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 0
+EX.Read_data2: 0
+EX.Imm: 000000000100
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 2
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000100
+        
+EX.halted: False
+MEM.nop: 1
+MEM.ALUresult: 4
+MEM.Store_data: 0
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 2
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000100
+        
+MEM.halted: False
+WB.nop: False
+WB.Wrt_data: 5
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 1
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:1,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000000
+        
+WB.halted: False
+State after executing cycle:	5
+IF.nop: 0
+IF.PC: 20
+IF.halted: False
+ID.nop: False
+ID.Instr: 01000000001000001000001000110011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 5
+EX.Read_data2: 3
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 3
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:3,
+funct7:0000000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 4
+MEM.Store_data: 0
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 2
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000100
+        
+MEM.halted: False
+WB.nop: 1
+WB.Wrt_data: 3
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 2
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000100
+        
+WB.halted: False
+State after executing cycle:	6
+IF.nop: 0
+IF.PC: 24
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000001100000010010000100011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 5
+EX.Read_data2: 3
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 4
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 6
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:4,
+funct7:0100000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 8
+MEM.Store_data: 3
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 3
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:3,
+funct7:0000000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 3
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 2
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000000100
+        
+WB.halted: False
+State after executing cycle:	7
+IF.nop: 0
+IF.PC: 28
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000010000000010011000100011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 0
+EX.Read_data2: 0
+EX.Imm: 000000001000
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 4
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:0,
+rs2:3,
+rd:None,
+funct7:None,
+funct3:010,
+opcode:0100011,
+imm:000000001000
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 2
+MEM.Store_data: 3
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 4
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:4,
+funct7:0100000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 8
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 3
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:3,
+funct7:0000000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+WB.halted: False
+State after executing cycle:	8
+IF.nop: 0
+IF.PC: 32
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000000100010111001010110011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 0
+EX.Read_data2: 0
+EX.Imm: 000000001100
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 4
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:0,
+rs2:4,
+rd:None,
+funct7:None,
+funct3:010,
+opcode:0100011,
+imm:000000001100
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 8
+MEM.Store_data: 0
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 4
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:0,
+rs2:3,
+rd:None,
+funct7:None,
+funct3:010,
+opcode:0100011,
+imm:000000001000
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 2
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 4
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:4,
+funct7:0100000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+WB.halted: False
+State after executing cycle:	9
+IF.nop: 0
+IF.PC: 36
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000000100010110001100110011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 3
+EX.Read_data2: 5
+EX.Imm: 000000001100
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 5
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 0
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:5,
+funct7:0000000,
+funct3:111,
+opcode:0110011,
+imm:None
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 12
+MEM.Store_data: 0
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 4
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:0,
+rs2:4,
+rd:None,
+funct7:None,
+funct3:010,
+opcode:0100011,
+imm:000000001100
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 2
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 4
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:0,
+rs2:3,
+rd:None,
+funct7:None,
+funct3:010,
+opcode:0100011,
+imm:000000001000
+        
+WB.halted: False
+State after executing cycle:	10
+IF.nop: 0
+IF.PC: 40
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000000100010100001110110011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 3
+EX.Read_data2: 5
+EX.Imm: 000000001100
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 6
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 1
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:6,
+funct7:0000000,
+funct3:110,
+opcode:0110011,
+imm:None
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 1
+MEM.Store_data: 5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 5
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:5,
+funct7:0000000,
+funct3:111,
+opcode:0110011,
+imm:None
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 2
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 4
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:0,
+rs2:4,
+rd:None,
+funct7:None,
+funct3:010,
+opcode:0100011,
+imm:000000001100
+        
+WB.halted: False
+State after executing cycle:	11
+IF.nop: 0
+IF.PC: 44
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000001000000000000000100000011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 3
+EX.Read_data2: 5
+EX.Imm: 000000001100
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 7
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 14
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:7,
+funct7:0000000,
+funct3:100,
+opcode:0110011,
+imm:None
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 7
+MEM.Store_data: 5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 6
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:6,
+funct7:0000000,
+funct3:110,
+opcode:0110011,
+imm:None
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 1
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 5
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:5,
+funct7:0000000,
+funct3:111,
+opcode:0110011,
+imm:None
+        
+WB.halted: False
+State after executing cycle:	12
+IF.nop: 0
+IF.PC: 44
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000001000001000010000110011
+ID.halted: False
+EX.nop: 1
+EX.Read_data1: 0
+EX.Read_data2: 5
+EX.Imm: 000000010000
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 2
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000010000
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 6
+MEM.Store_data: 5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 7
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:7,
+funct7:0000000,
+funct3:100,
+opcode:0110011,
+imm:None
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 7
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 6
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:6,
+funct7:0000000,
+funct3:110,
+opcode:0110011,
+imm:None
+        
+WB.halted: False
+State after executing cycle:	13
+IF.nop: 0
+IF.PC: 48
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000001000001000010000110011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 0
+EX.Read_data2: 5
+EX.Imm: 000000010000
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 2
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000010000
+        
+EX.halted: False
+MEM.nop: 1
+MEM.ALUresult: 16
+MEM.Store_data: 5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 2
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000010000
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 6
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 7
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:7,
+funct7:0000000,
+funct3:100,
+opcode:0110011,
+imm:None
+        
+WB.halted: False
+State after executing cycle:	14
+IF.nop: 0
+IF.PC: 52
+IF.halted: False
+ID.nop: False
+ID.Instr: 01000000001000001000010010110011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 5
+EX.Read_data2: -3
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 8
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:8,
+funct7:0000000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 16
+MEM.Store_data: 5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 2
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000010000
+        
+MEM.halted: False
+WB.nop: 1
+WB.Wrt_data: -3
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 2
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000010000
+        
+WB.halted: False
+State after executing cycle:	15
+IF.nop: 0
+IF.PC: 56
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000000100010111010100110011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 5
+EX.Read_data2: -3
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 9
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 6
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:9,
+funct7:0100000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 2
+MEM.Store_data: -3
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 8
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:8,
+funct7:0000000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: -3
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 2
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000010000
+        
+WB.halted: False
+State after executing cycle:	16
+IF.nop: 0
+IF.PC: 60
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000000100010110010110110011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: -3
+EX.Read_data2: 5
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 10
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 0
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:10,
+funct7:0000000,
+funct3:111,
+opcode:0110011,
+imm:None
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 8
+MEM.Store_data: -3
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 9
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:9,
+funct7:0100000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 2
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 8
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:8,
+funct7:0000000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+WB.halted: False
+State after executing cycle:	17
+IF.nop: 0
+IF.PC: 64
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000000100010100011000110011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: -3
+EX.Read_data2: 5
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 11
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 1
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:11,
+funct7:0000000,
+funct3:110,
+opcode:0110011,
+imm:None
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 5
+MEM.Store_data: 5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 10
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:10,
+funct7:0000000,
+funct3:111,
+opcode:0110011,
+imm:None
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 8
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 9
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:9,
+funct7:0100000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+WB.halted: False
+State after executing cycle:	18
+IF.nop: 0
+IF.PC: 68
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000001010000000000000010000011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: -3
+EX.Read_data2: 5
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 12
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 14
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:12,
+funct7:0000000,
+funct3:100,
+opcode:0110011,
+imm:None
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: -3
+MEM.Store_data: 5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 11
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:11,
+funct7:0000000,
+funct3:110,
+opcode:0110011,
+imm:None
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 5
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 10
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:10,
+funct7:0000000,
+funct3:111,
+opcode:0110011,
+imm:None
+        
+WB.halted: False
+State after executing cycle:	19
+IF.nop: 0
+IF.PC: 72
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000001100000000000000100000011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 0
+EX.Read_data2: 5
+EX.Imm: 000000010100
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 1
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:1,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000010100
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: -8
+MEM.Store_data: 5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 12
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:12,
+funct7:0000000,
+funct3:100,
+opcode:0110011,
+imm:None
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: -3
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 11
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:11,
+funct7:0000000,
+funct3:110,
+opcode:0110011,
+imm:None
+        
+WB.halted: False
+State after executing cycle:	20
+IF.nop: 0
+IF.PC: 72
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000001000001000011010110011
+ID.halted: False
+EX.nop: 1
+EX.Read_data1: 0
+EX.Read_data2: 5
+EX.Imm: 000000011000
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 2
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000011000
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 20
+MEM.Store_data: 5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 1
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:1,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000010100
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: -8
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 12
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:12,
+funct7:0000000,
+funct3:100,
+opcode:0110011,
+imm:None
+        
+WB.halted: False
+State after executing cycle:	21
+IF.nop: 0
+IF.PC: 76
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000001000001000011010110011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 0
+EX.Read_data2: 5
+EX.Imm: 000000011000
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 2
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000011000
+        
+EX.halted: False
+MEM.nop: 1
+MEM.ALUresult: 24
+MEM.Store_data: 5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 2
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000011000
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: -5
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 1
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:1,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000010100
+        
+WB.halted: False
+State after executing cycle:	22
+IF.nop: 0
+IF.PC: 80
+IF.halted: False
+ID.nop: False
+ID.Instr: 01000000001000001000011100110011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: -5
+EX.Read_data2: 2
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 13
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:13,
+funct7:0000000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 24
+MEM.Store_data: 5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 2
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000011000
+        
+MEM.halted: False
+WB.nop: 1
+WB.Wrt_data: 2
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 2
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000011000
+        
+WB.halted: False
+State after executing cycle:	23
+IF.nop: 0
+IF.PC: 84
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000000100010111011110110011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: -5
+EX.Read_data2: 2
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 14
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 6
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:14,
+funct7:0100000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: -3
+MEM.Store_data: 2
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 13
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:13,
+funct7:0000000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 2
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 2
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:0,
+rs2:None,
+rd:2,
+funct7:None,
+funct3:000,
+opcode:0000011,
+imm:000000011000
+        
+WB.halted: False
+State after executing cycle:	24
+IF.nop: 0
+IF.PC: 88
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000000100010110100000110011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 2
+EX.Read_data2: -5
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 15
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 0
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:15,
+funct7:0000000,
+funct3:111,
+opcode:0110011,
+imm:None
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: -7
+MEM.Store_data: 2
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 14
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:14,
+funct7:0100000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: -3
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 13
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:13,
+funct7:0000000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+WB.halted: False
+State after executing cycle:	25
+IF.nop: 0
+IF.PC: 92
+IF.halted: False
+ID.nop: False
+ID.Instr: 00000000000100010100100010110011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 2
+EX.Read_data2: -5
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 16
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 1
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:16,
+funct7:0000000,
+funct3:110,
+opcode:0110011,
+imm:None
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 2
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 15
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:15,
+funct7:0000000,
+funct3:111,
+opcode:0110011,
+imm:None
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: -7
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 14
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:1,
+rs2:2,
+rd:14,
+funct7:0100000,
+funct3:000,
+opcode:0110011,
+imm:None
+        
+WB.halted: False
+State after executing cycle:	26
+IF.nop: 0
+IF.PC: 96
+IF.halted: False
+ID.nop: False
+ID.Instr: 01111111111100010000100100010011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 2
+EX.Read_data2: -5
+EX.Imm: 0
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 17
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 14
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:17,
+funct7:0000000,
+funct3:100,
+opcode:0110011,
+imm:None
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: -5
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 16
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:16,
+funct7:0000000,
+funct3:110,
+opcode:0110011,
+imm:None
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 2
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 15
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:15,
+funct7:0000000,
+funct3:111,
+opcode:0110011,
+imm:None
+        
+WB.halted: False
+State after executing cycle:	27
+IF.nop: 0
+IF.PC: 100
+IF.halted: False
+ID.nop: False
+ID.Instr: 01111111111100010111100110010011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 2
+EX.Read_data2: -5
+EX.Imm: 011111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 18
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:18,
+funct7:None,
+funct3:000,
+opcode:0010011,
+imm:011111111111
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: -7
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 17
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:17,
+funct7:0000000,
+funct3:100,
+opcode:0110011,
+imm:None
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: -5
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 16
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:16,
+funct7:0000000,
+funct3:110,
+opcode:0110011,
+imm:None
+        
+WB.halted: False
+State after executing cycle:	28
+IF.nop: 0
+IF.PC: 104
+IF.halted: False
+ID.nop: False
+ID.Instr: 01111111111100010110101000010011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 2
+EX.Read_data2: -5
+EX.Imm: 011111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 19
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 0
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:19,
+funct7:None,
+funct3:111,
+opcode:0010011,
+imm:011111111111
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 2049
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 18
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:18,
+funct7:None,
+funct3:000,
+opcode:0010011,
+imm:011111111111
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: -7
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 17
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:1,
+rd:17,
+funct7:0000000,
+funct3:100,
+opcode:0110011,
+imm:None
+        
+WB.halted: False
+State after executing cycle:	29
+IF.nop: 0
+IF.PC: 108
+IF.halted: False
+ID.nop: False
+ID.Instr: 01111111111100010100101010010011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 2
+EX.Read_data2: -5
+EX.Imm: 011111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 20
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 1
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:20,
+funct7:None,
+funct3:110,
+opcode:0010011,
+imm:011111111111
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 2
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 19
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:19,
+funct7:None,
+funct3:111,
+opcode:0010011,
+imm:011111111111
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 2049
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 18
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:18,
+funct7:None,
+funct3:000,
+opcode:0010011,
+imm:011111111111
+        
+WB.halted: False
+State after executing cycle:	30
+IF.nop: 0
+IF.PC: 112
+IF.halted: False
+ID.nop: False
+ID.Instr: 01111111111100001000101100010011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 2
+EX.Read_data2: -5
+EX.Imm: 011111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 21
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 14
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:21,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:011111111111
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 2047
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 20
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:20,
+funct7:None,
+funct3:110,
+opcode:0010011,
+imm:011111111111
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 2
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 19
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:19,
+funct7:None,
+funct3:111,
+opcode:0010011,
+imm:011111111111
+        
+WB.halted: False
+State after executing cycle:	31
+IF.nop: 0
+IF.PC: 116
+IF.halted: False
+ID.nop: False
+ID.Instr: 01111111111100001111101110010011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: -5
+EX.Read_data2: -5
+EX.Imm: 011111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 22
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:22,
+funct7:None,
+funct3:000,
+opcode:0010011,
+imm:011111111111
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 2045
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 21
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:21,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:011111111111
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 2047
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 20
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:20,
+funct7:None,
+funct3:110,
+opcode:0010011,
+imm:011111111111
+        
+WB.halted: False
+State after executing cycle:	32
+IF.nop: 0
+IF.PC: 120
+IF.halted: False
+ID.nop: False
+ID.Instr: 01111111111100001110110000010011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: -5
+EX.Read_data2: -5
+EX.Imm: 011111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 23
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 0
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:23,
+funct7:None,
+funct3:111,
+opcode:0010011,
+imm:011111111111
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 2042
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 22
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:22,
+funct7:None,
+funct3:000,
+opcode:0010011,
+imm:011111111111
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 2045
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 21
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:21,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:011111111111
+        
+WB.halted: False
+State after executing cycle:	33
+IF.nop: 0
+IF.PC: 124
+IF.halted: False
+ID.nop: False
+ID.Instr: 01111111111100001100110010010011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: -5
+EX.Read_data2: -5
+EX.Imm: 011111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 24
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 1
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:24,
+funct7:None,
+funct3:110,
+opcode:0010011,
+imm:011111111111
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 2043
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 23
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:23,
+funct7:None,
+funct3:111,
+opcode:0010011,
+imm:011111111111
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 2042
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 22
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:22,
+funct7:None,
+funct3:000,
+opcode:0010011,
+imm:011111111111
+        
+WB.halted: False
+State after executing cycle:	34
+IF.nop: 0
+IF.PC: 128
+IF.halted: False
+ID.nop: False
+ID.Instr: 11111111111100010000110100010011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: -5
+EX.Read_data2: -5
+EX.Imm: 011111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 25
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 14
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:25,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:011111111111
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: -1
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 24
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:24,
+funct7:None,
+funct3:110,
+opcode:0010011,
+imm:011111111111
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 2043
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 23
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:23,
+funct7:None,
+funct3:111,
+opcode:0010011,
+imm:011111111111
+        
+WB.halted: False
+State after executing cycle:	35
+IF.nop: 0
+IF.PC: 132
+IF.halted: False
+ID.nop: False
+ID.Instr: 11111111111100010111110110010011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 2
+EX.Read_data2: -5
+EX.Imm: 111111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 26
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:26,
+funct7:None,
+funct3:000,
+opcode:0010011,
+imm:111111111111
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: -2044
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 25
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:25,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:011111111111
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: -1
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 24
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:24,
+funct7:None,
+funct3:110,
+opcode:0010011,
+imm:011111111111
+        
+WB.halted: False
+State after executing cycle:	36
+IF.nop: 0
+IF.PC: 136
+IF.halted: False
+ID.nop: False
+ID.Instr: 11111111111100010110111000010011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 2
+EX.Read_data2: -5
+EX.Imm: 111111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 27
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 0
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:27,
+funct7:None,
+funct3:111,
+opcode:0010011,
+imm:111111111111
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 1
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 26
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:26,
+funct7:None,
+funct3:000,
+opcode:0010011,
+imm:111111111111
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: -2044
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 25
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:25,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:011111111111
+        
+WB.halted: False
+State after executing cycle:	37
+IF.nop: 0
+IF.PC: 140
+IF.halted: False
+ID.nop: False
+ID.Instr: 11111111111100010100111010010011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 2
+EX.Read_data2: -5
+EX.Imm: 111111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 28
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 1
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:28,
+funct7:None,
+funct3:110,
+opcode:0010011,
+imm:111111111111
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: 2
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 27
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:27,
+funct7:None,
+funct3:111,
+opcode:0010011,
+imm:111111111111
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 1
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 26
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:26,
+funct7:None,
+funct3:000,
+opcode:0010011,
+imm:111111111111
+        
+WB.halted: False
+State after executing cycle:	38
+IF.nop: 0
+IF.PC: 144
+IF.halted: False
+ID.nop: False
+ID.Instr: 11111111111100001000111100010011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: 2
+EX.Read_data2: -5
+EX.Imm: 111111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 29
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 14
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:29,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:111111111111
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: -1
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 28
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:28,
+funct7:None,
+funct3:110,
+opcode:0010011,
+imm:111111111111
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: 2
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 27
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:27,
+funct7:None,
+funct3:111,
+opcode:0010011,
+imm:111111111111
+        
+WB.halted: False
+State after executing cycle:	39
+IF.nop: 0
+IF.PC: 148
+IF.halted: False
+ID.nop: False
+ID.Instr: 11111111111100001111111110010011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: -5
+EX.Read_data2: -5
+EX.Imm: 111111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 30
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 2
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:30,
+funct7:None,
+funct3:000,
+opcode:0010011,
+imm:111111111111
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: -3
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 29
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:29,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:111111111111
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: -1
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 28
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:28,
+funct7:None,
+funct3:110,
+opcode:0010011,
+imm:111111111111
+        
+WB.halted: False
+State after executing cycle:	40
+IF.nop: 0
+IF.PC: 152
+IF.halted: False
+ID.nop: False
+ID.Instr: 11111111111100001110111110010011
+ID.halted: False
+EX.nop: 0
+EX.Read_data1: -5
+EX.Read_data2: -5
+EX.Imm: 111111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 31
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 0
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:31,
+funct7:None,
+funct3:111,
+opcode:0010011,
+imm:111111111111
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: -6
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 30
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:30,
+funct7:None,
+funct3:000,
+opcode:0010011,
+imm:111111111111
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: -3
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 29
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:2,
+rs2:None,
+rd:29,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:111111111111
+        
+WB.halted: False
+State after executing cycle:	41
+IF.nop: 1
+IF.PC: 156
+IF.halted: True
+ID.nop: False
+ID.Instr: 11111111111100001100000000010011
+ID.halted: True
+EX.nop: 0
+EX.Read_data1: -5
+EX.Read_data2: -5
+EX.Imm: 111111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 31
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 1
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:31,
+funct7:None,
+funct3:110,
+opcode:0010011,
+imm:111111111111
+        
+EX.halted: False
+MEM.nop: 0
+MEM.ALUresult: -5
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 31
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:31,
+funct7:None,
+funct3:111,
+opcode:0010011,
+imm:111111111111
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: -6
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 30
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:30,
+funct7:None,
+funct3:000,
+opcode:0010011,
+imm:111111111111
+        
+WB.halted: False
+State after executing cycle:	42
+IF.nop: 1
+IF.PC: 156
+IF.halted: True
+ID.nop: 1
+ID.Instr: 11111111111100001100000000010011
+ID.halted: True
+EX.nop: 0
+EX.Read_data1: -5
+EX.Read_data2: -5
+EX.Imm: 111111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 0
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 14
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:0,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:111111111111
+        
+EX.halted: True
+MEM.nop: 0
+MEM.ALUresult: -1
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 31
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:31,
+funct7:None,
+funct3:110,
+opcode:0010011,
+imm:111111111111
+        
+MEM.halted: False
+WB.nop: 0
+WB.Wrt_data: -5
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 31
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:31,
+funct7:None,
+funct3:111,
+opcode:0010011,
+imm:111111111111
+        
+WB.halted: False
+State after executing cycle:	43
+IF.nop: 1
+IF.PC: 156
+IF.halted: True
+ID.nop: 1
+ID.Instr: 11111111111100001100000000010011
+ID.halted: True
+EX.nop: 1
+EX.Read_data1: -5
+EX.Read_data2: -5
+EX.Imm: 111111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 0
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 14
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:0,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:111111111111
+        
+EX.halted: True
+MEM.nop: 0
+MEM.ALUresult: 4
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 0
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:0,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:111111111111
+        
+MEM.halted: True
+WB.nop: 0
+WB.Wrt_data: -1
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 31
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:31,
+funct7:None,
+funct3:110,
+opcode:0010011,
+imm:111111111111
+        
+WB.halted: False
+State after executing cycle:	44
+IF.nop: 1
+IF.PC: 156
+IF.halted: True
+ID.nop: 1
+ID.Instr: 11111111111100001100000000010011
+ID.halted: True
+EX.nop: 1
+EX.Read_data1: -5
+EX.Read_data2: -5
+EX.Imm: 111111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 0
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 14
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:0,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:111111111111
+        
+EX.halted: True
+MEM.nop: 1
+MEM.ALUresult: 4
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 0
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:0,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:111111111111
+        
+MEM.halted: True
+WB.nop: 0
+WB.Wrt_data: 4
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 0
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:0,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:111111111111
+        
+WB.halted: True
+State after executing cycle:	45
+IF.nop: 1
+IF.PC: 156
+IF.halted: True
+ID.nop: 1
+ID.Instr: 11111111111100001100000000010011
+ID.halted: True
+EX.nop: 1
+EX.Read_data1: -5
+EX.Read_data2: -5
+EX.Imm: 111111111111
+EX.Rs: 0
+EX.Rt: 0
+EX.Wrt_reg_addr: 0
+EX.is_I_type: False
+EX.rd_mem: 0
+EX.wrt_mem: 0
+EX.alu_op: 14
+EX.wrt_enable: 0
+EX.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:0,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:111111111111
+        
+EX.halted: True
+MEM.nop: 1
+MEM.ALUresult: 4
+MEM.Store_data: -5
+MEM.Rs: 0
+MEM.Rt: 0
+MEM.Wrt_reg_addr: 0
+MEM.rd_mem: 0
+MEM.wrt_mem: 0
+MEM.wrt_enable: 0
+MEM.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:0,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:111111111111
+        
+MEM.halted: True
+WB.nop: 1
+WB.Wrt_data: 4
+WB.Rs: 0
+WB.Rt: 0
+WB.Wrt_reg_addr: 0
+WB.wrt_enable: 0
+WB.parsed_instr: 
+rs1:1,
+rs2:None,
+rd:0,
+funct7:None,
+funct3:100,
+opcode:0010011,
+imm:111111111111
+        
+WB.halted: True

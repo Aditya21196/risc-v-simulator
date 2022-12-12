@@ -2,239 +2,266 @@ import os
 import argparse
 from stage_utils import STAGES
 from instruction import Instruction, INSTR_TYPES
-from utils import sign_extend_32
+from utils import sign_safe_binary_conversion, sign_safe_binary_to_int, sign_extend_12
 from alu import ALU
+from core import Core, SingleStageCore, RegisterFile, InsMem, DataMem, State
 
 MemSize = 1000 # memory size, in reality, the memory size should be 2^32, but for this lab, for the space resaon, we keep it as this large number, but the memory is still 32-bit addressable.
-
-class InsMem(object):
-    def __init__(self, name, ioDir):
-        self.id = name
-        
-        with open(os.path.join(ioDir,'imem.txt')) as im:
-            self.IMem = [data.replace("\n", "") for data in im.readlines()]
-
-    def readInstr(self, ReadAddress):
-        #read instruction memory
-        #return 32 bit hex val
-        if ReadAddress %4 != 0:
-            ReadAddress //= 4 # make sure it is a multiple of 4
-        instr_binary = "".join(self.IMem[ReadAddress:ReadAddress+4]) # read Big Endian instruction
-        return instr_binary # We choose to work with binary instruction as a string
-          
-class DataMem(object):
-    def __init__(self, name, ioDir):
-        self.id = name
-        self.ioDir = ioDir
-        with open(os.path.join(ioDir,'dmem.txt')) as dm:
-            self.DMem = [data.replace("\n", "") for data in dm.readlines()]
-
-    def readDataMem(self, ReadAddress):
-        #read data memory
-        #return 32 bit hex val
-        if ReadAddress %4 != 0:
-            ReadAddress //= 4 # make sure it is a multiple of 4
-        data_binary = "".join(self.DMem[ReadAddress:ReadAddress+4]) # read Big Endian instruction
-        return data_binary
-        
-    def writeDataMem(self, Address, WriteData):
-        # write data into byte addressable memory
-
-        pass
-                     
-    def outputDataMem(self):
-        resPath = os.path.join(ioDir, self.id + "_DMEMResult.txt")
-        with open(resPath, "w") as rp:
-            rp.writelines([str(data) + "\n" for data in self.DMem])
-
-class RegisterFile(object):
-    def __init__(self, ioDir):
-        self.outputFile = ioDir + "RFResult.txt"
-        self.Registers = [0x0 for i in range(32)]
-    
-    def readRF(self, Reg_addr):
-        return self.Registers[Reg_addr]
-    
-    def writeRF(self, Reg_addr, Wrt_reg_data):
-       self.Registers[Reg_addr] = Wrt_reg_data
-         
-    def outputRF(self, cycle):
-        op = ["-"*70+"\n", "State of RF after executing cycle:" + str(cycle) + "\n"]
-        op.extend([str(val)+"\n" for val in self.Registers])
-        if(cycle == 0): perm = "w"
-        else: perm = "a"
-        with open(self.outputFile, perm) as file:
-            file.writelines(op)
-
-class State(object):
-    def __init__(self):
-        self.IF = {"nop": False, "PC": 0}
-        self.ID = {"nop": False, "Instr": 0}
-        self.EX = {"nop": False, "Read_data1": 0, "Read_data2": 0, "Imm": 0, "Rs": 0, "Rt": 0, "Wrt_reg_addr": 0, "is_I_type": False, "rd_mem": 0, 
-                   "wrt_mem": 0, "alu_op": 0, "wrt_enable": 0}
-        self.MEM = {"nop": False, "ALUresult": 0, "Store_data": 0, "Rs": 0, "Rt": 0, "Wrt_reg_addr": 0, "rd_mem": 0, 
-                   "wrt_mem": 0, "wrt_enable": 0}
-        self.WB = {"nop": False, "Wrt_data": 0, "Rs": 0, "Rt": 0, "Wrt_reg_addr": 0, "wrt_enable": 0}
-
-class Core(object):
-    def __init__(self, ioDir, imem, dmem):
-        self.myRF = RegisterFile(ioDir)
-        self.cycle = 0
-        self.halted = False
-        self.ioDir = ioDir
-        self.state = State()
-        self.nextState = State()
-        self.ext_imem = imem
-        self.ext_dmem = dmem
-
-class SingleStageCore(Core):
-    def __init__(self, ioDir, imem, dmem):
-        super(SingleStageCore, self).__init__(os.path.join(ioDir,"SS_"), imem, dmem)
-        self.opFilePath = os.path.join(ioDir,"StateResult_SS.txt")
-        self.stage = STAGES.IF
-
-    def handle_IF(self):
-        self.instr = self.ext_imem.readInstr(self.state.IF["PC"])
-        self.stage = STAGES.ID
-        
-    def handle_ID(self):
-        self.parsed_instruction = Instruction(self.instr) # encapsulates control as well
-
-        if self.parsed_instruction.rs1:
-            self.state.EX["Read_data1"] = self.myRF.readRF(self.parsed_instruction.rs1)
-        
-        if self.parsed_instruction.rs2:
-            self.state.EX["Read_data2"] = self.myRF.readRF(self.parsed_instruction.rs2)
-        
-        if self.parsed_instruction.imm:
-            self.state.EX["Imm"] = self.parsed_instruction.imm
-        
-        if self.parsed_instruction.alu_control:
-            self.state.EX["alu_op"] = self.parsed_instruction.alu_control.get_operation()
-        
-        if self.parsed_instruction.rd:
-            self.state.EX["Wrt_reg_addr"] = self.parsed_instruction.rd
-
-        self.stage = STAGES.EX
-
-    def handle_EX(self):
-        op1 = self.state.EX["Read_data1"]
-        if self.parsed_instruction.control.AluSrc == 0:
-            op2 = self.state.EX["Read_data2"]
-        else:
-            op2 = int(sign_extend_32(self.state.EX["Imm"]),2)
-        self.state.MEM["ALUresult"] = ALU[self.state.EX["alu_op"]](op1,op2)
-
-        
-        self.state.MEM["Wrt_reg_addr"] = self.state.EX["Wrt_reg_addr"]
-        
-        self.state.MEM["Store_data"] = self.state.EX["Read_data2"]
-
-        if self.parsed_instruction.control.Branch == 1:
-            if self.state.MEM["ALUresult"] == 0:
-                # branch condition satisfied
-                self.state.IF["PC"] += self.state.EX["Imm"]
-            else:
-                self.state.IF["PC"] += 4
-            self.stage = STAGES.IF
-        self.stage = STAGES.MEM
-
-    def handle_MEM(self):
-        if self.parsed_instruction.control.MemRead == 1:
-            # read from ALU result as address
-            pass
-        
-        
-        if self.parsed_instruction.control.MemWrite == 1:
-            self.ext_dmem.writeDataMem(self.state.MEM["ALUresult"],self.state.MEM["Store_data"])
-        
-        if self.parsed_instruction.control.MemtoReg == 1:
-            self.state.WB["Wrt_data"]  = int(self.ext_dmem.readDataMem(self.state.MEM["ALUresult"]),2)
-        else:
-            self.state.WB["Wrt_data"] = self.state.MEM["ALUresult"]
-
-        self.state.WB["Wrt_reg_addr"] = self.state.MEM["Wrt_reg_addr"]
-
-        self.stage = STAGES.WB
-
-    def handle_WB(self):
-        if self.parsed_instruction.control.RegWrite:
-            self.myRF.writeRF(self.state.WB["Wrt_reg_addr"],self.state.WB["Wrt_data"])
-        
-        self.state.IF["PC"] += 4
-        self.stage = STAGES.IF
-
-    def step(self):
-        # Your implementation
-
-        # find the stage
-        if self.stage == STAGES.IF:
-            self.handle_IF()
-        elif self.stage == STAGES.ID:
-            self.handle_ID()
-        elif self.stage == STAGES.EX:
-            self.handle_EX()
-        elif self.stage == STAGES.MEM:
-            self.handle_MEM()
-        elif self.stage == STAGES.WB:
-            self.handle_WB()
-        else:
-            raise Exception("Invalid stage")
-        
-        
-        self.myRF.outputRF(self.cycle) # dump RF
-        self.printState(self.nextState, self.cycle) # print states after executing cycle 0, cycle 1, cycle 2 ... 
-            
-        self.state = self.nextState #The end of the cycle and updates the current state with the values calculated in this cycle
-        self.cycle += 1
-
-    def printState(self, state, cycle):
-        printstate = ["-"*70+"\n", "State after executing cycle: " + str(cycle) + "\n"]
-        printstate.append("IF.PC: " + str(state.IF["PC"]) + "\n")
-        printstate.append("IF.nop: " + str(state.IF["nop"]) + "\n")
-        
-        if(cycle == 0): perm = "w"
-        else: perm = "a"
-        with open(self.opFilePath, perm) as wf:
-            wf.writelines(printstate)
 
 class FiveStageCore(Core):
     def __init__(self, ioDir, imem, dmem):
         super(FiveStageCore, self).__init__(os.path.join(ioDir,"FS_"), imem, dmem)
         self.opFilePath = os.path.join(ioDir,'StateResult_FS.txt')
+        self.buffer = State() # reuse state class because it encapsulates everything already
+
+    def handle_IF(self):
+        # process new instruction
+        if self.state.ID["halted"]:
+            return
+
+        self.buffer.ID["Instr"] = self.ext_imem.readInstr(self.state.IF["PC"])
+
+        self.state.IF["PC"] += 4
+
+    def check_branching(self,parsed_instruction):
+        val1, val2 = self.buffer.EX["Read_data1"],self.buffer.EX["Read_data2"]
+
+        if self.buffer.WB["parsed_instr"] and self.buffer.WB["parsed_instr"].control.RegWrite:
+            if parsed_instruction.rs1 and parsed_instruction.rs1 == self.buffer.WB["Wrt_reg_addr"]:
+                val1 = self.buffer.WB["Wrt_data"]
+            elif parsed_instruction.rs2 and parsed_instruction.rs2 == self.buffer.WB["Wrt_reg_addr"]:
+                val2 = self.buffer.WB["Wrt_data"]
+
+        if parsed_instruction.rs1 and parsed_instruction.rs1 == self.buffer.MEM["Wrt_reg_addr"]:
+            val1 = self.buffer.MEM["ALUresult"]
+        elif parsed_instruction.rs2 and parsed_instruction.rs2 == self.buffer.MEM["Wrt_reg_addr"]:
+            val2 = self.buffer.MEM["ALUresult"]
+        
+        rs_equal = (val1 == val2)
+
+        return (parsed_instruction.funct3 == '000' and rs_equal) or (parsed_instruction.funct3 == '001' and not rs_equal)
+
+
+
+    def handle_ID(self):
+        if self.state.ID["halted"]:
+            self.state.EX["halted"] = True
+            self.state.ID["nop"] = 1
+            return
+
+        self.state.ID["Instr"] = self.buffer.ID["Instr"]
+        
+        if not self.state.ID["Instr"]:
+            return
+
+        parsed_instruction = Instruction(self.buffer.ID["Instr"])
+
+        if parsed_instruction.instr_type == INSTR_TYPES.HALT:
+            self.state.ID["halted"] = True
+            self.state.EX["halted"] = True
+            self.state.ID["nop"] = 1
+            return
+
+        if self.check_load_use_data(parsed_instruction):
+            return
+
+        # pass the instruction itself to the buffer along with state relevant data
+        self.buffer.EX["parsed_instr"] = parsed_instruction
+        if not parsed_instruction.rs1 is None:
+            self.buffer.EX["Read_data1"] = self.myRF.readRF(parsed_instruction.rs1)
+        
+        if not parsed_instruction.rs2 is None:
+            self.buffer.EX["Read_data2"] = self.myRF.readRF(parsed_instruction.rs2)
+        
+        if parsed_instruction.control.Branch == 1 and self.check_branching(parsed_instruction):
+            self.state.EX["nop"] = 1
+            self.state.IF["PC"] = self.state.IF["PC"] - 4 + sign_safe_binary_to_int(sign_extend_12(parsed_instruction.imm))
+            return
+
+        if not parsed_instruction.imm is None:
+            self.buffer.EX["Imm"] = parsed_instruction.imm
+        
+        if not parsed_instruction.alu_control is None:
+            self.buffer.EX["alu_op"] = parsed_instruction.alu_control.get_operation()
+        
+        if not parsed_instruction.rd is None:
+            self.buffer.EX["Wrt_reg_addr"] = parsed_instruction.rd
+
+        if parsed_instruction.control.Jump == 1:
+            self.myRF.writeRF(parsed_instruction.rd,self.state.IF["PC"])
+            self.state.IF["PC"] = self.state.IF["PC"] - 4 + sign_safe_binary_to_int(sign_extend_12(parsed_instruction.imm))
+            self.state.EX["nop"] = 1
+            return
+
+            
+
+    def check_load_use_data(self,parsed_instruction):
+        if self.buffer.EX["parsed_instr"] and self.buffer.EX["parsed_instr"].control.MemRead:
+            if (self.buffer.EX["parsed_instr"].rd == parsed_instruction.rs1) or (self.buffer.EX["parsed_instr"].rd == parsed_instruction.rs2):
+                self.state.IF["PC"] -= 4
+                self.state.EX["nop"] = 1
+                
+                return True
+        return False
+
+    def check_forwarding(self):
+        forwardA,forwardB = 0b00,0b00
+
+        if self.buffer.WB["parsed_instr"] and self.buffer.EX["parsed_instr"] and self.buffer.EX["parsed_instr"].control.RegWrite:
+            if self.buffer.MEM["parsed_instr"] and self.buffer.MEM["parsed_instr"].rd and self.buffer.MEM["parsed_instr"].rd == self.buffer.EX["parsed_instr"].rs1:
+                forwardA = 0b10
+            elif self.buffer.WB["parsed_instr"].rd and self.buffer.WB["parsed_instr"].rd == self.buffer.EX["parsed_instr"].rs1:
+                forwardA = 0b01
+        
+            if self.buffer.MEM["parsed_instr"] and self.buffer.MEM["parsed_instr"].rd and self.buffer.MEM["parsed_instr"].rd == self.buffer.EX["parsed_instr"].rs2:
+                forwardB = 0b10
+            elif self.buffer.WB["parsed_instr"].rd and self.buffer.WB["parsed_instr"].rd == self.buffer.EX["parsed_instr"].rs2:
+                forwardB = 0b01
+        
+        return forwardA,forwardB
+
+    def handle_EX(self):
+        
+        if self.state.EX["halted"]:
+            self.state.MEM["halted"] = True
+            self.state.EX["nop"] = 1
+            return
+
+        if self.state.EX["nop"] == 1:
+            self.buffer.reset_EX()
+            self.state.MEM["nop"] = 1
+            self.state.EX["nop"] = 0
+            return
+
+
+        forwardA,forwardB = self.check_forwarding()
+
+        self.state.EX["parsed_instr"] = self.buffer.EX["parsed_instr"]
+
+        self.state.EX["Read_data1"] = self.buffer.EX["Read_data1"]
+
+        self.state.EX["Read_data2"] = self.buffer.EX["Read_data2"]
+        
+
+        self.state.EX["Imm"] = self.buffer.EX["Imm"]
+        self.state.EX["alu_op"] = self.buffer.EX["alu_op"]
+        self.state.EX["Wrt_reg_addr"] = self.buffer.EX["Wrt_reg_addr"]
+
+        if forwardA == 0b01:
+            self.state.EX["Read_data1"] = self.buffer.WB["Wrt_data"]
+        elif forwardA == 0b10:
+            self.state.EX["Read_data1"] = self.buffer.MEM["ALUresult"]
+            
+        if forwardB == 0b01:
+            self.state.EX["Read_data2"] = self.buffer.WB["Wrt_data"]
+        elif forwardB == 0b10:
+            self.state.EX["Read_data2"] = self.buffer.MEM["ALUresult"]
+
+        if self.state.EX["parsed_instr"]:
+            self.buffer.MEM["parsed_instr"] = self.state.EX["parsed_instr"]
+
+            op1 = self.state.EX["Read_data1"]
+            if self.state.EX["parsed_instr"].control.AluSrc == 0:
+                op2 = self.state.EX["Read_data2"]
+            else:
+                op2 = sign_safe_binary_to_int(sign_extend_12(self.state.EX["Imm"]))
+
+            self.buffer.MEM["ALUresult"] = ALU[self.state.EX["alu_op"]](op1,op2)
+
+            self.buffer.MEM["Wrt_reg_addr"] = self.state.EX["Wrt_reg_addr"]
+            
+            self.buffer.MEM["Store_data"] = self.state.EX["Read_data2"]
+
+
+    def handle_MEM(self):
+
+        if self.state.MEM["halted"]:
+            self.state.WB["halted"] = True
+            self.state.MEM["nop"] = 1
+            return
+
+        if self.state.MEM["nop"] == 1:
+            self.buffer.reset_MEM()
+            self.state.WB["nop"] = 1
+            self.state.MEM["nop"] = 0
+            return
+
+        self.state.MEM["parsed_instr"] = self.buffer.MEM["parsed_instr"]
+        self.state.MEM["ALUresult"] = self.buffer.MEM["ALUresult"]
+        self.state.MEM["Store_data"] = self.buffer.MEM["Store_data"]
+        self.state.MEM["Wrt_reg_addr"] = self.buffer.MEM["Wrt_reg_addr"]
+
+
+        if self.state.MEM["parsed_instr"]:
+
+            self.buffer.WB["parsed_instr"] = self.state.MEM["parsed_instr"]
+
+            if self.state.MEM["parsed_instr"].control.MemWrite == 1:
+                self.ext_dmem.writeDataMem(self.state.MEM["ALUresult"],self.state.MEM["Store_data"])
+            
+            if self.state.MEM["parsed_instr"].control.MemtoReg == 1:
+                if self.state.MEM["parsed_instr"].control.MemRead == 1:
+                    read_addr = self.state.MEM["ALUresult"]
+                    read_val = sign_safe_binary_to_int(self.ext_dmem.readDataMem(read_addr))
+                    self.buffer.WB["Wrt_data"] = read_val
+
+            elif self.state.MEM["parsed_instr"].control.MemtoReg == 0:
+                self.buffer.WB["Wrt_data"] = self.state.MEM["ALUresult"]
+            
+            self.buffer.WB["Wrt_reg_addr"] = self.state.MEM["Wrt_reg_addr"]
+
+
+    def handle_WB(self):
+
+        if self.state.WB["halted"]:
+            self.state.WB["nop"] = 1
+            return
+
+        if self.state.WB["nop"] == 1:
+            self.buffer.reset_WB()
+            self.state.WB["nop"] = 0
+            return
+
+        self.state.WB["parsed_instr"] = self.buffer.WB["parsed_instr"]
+        self.state.WB["Wrt_reg_addr"] = self.buffer.WB["Wrt_reg_addr"]
+        self.state.WB["Wrt_data"] = self.buffer.WB["Wrt_data"]
+        
+        if self.state.WB["parsed_instr"]:
+            if self.state.WB["parsed_instr"].control.RegWrite:
+                self.myRF.writeRF(self.state.WB["Wrt_reg_addr"],self.state.WB["Wrt_data"])
 
     def step(self):
         # Your implementation
         # --------------------- WB stage ---------------------
-        
+        self.handle_WB()
         
         
         # --------------------- MEM stage --------------------
-        
+        self.handle_MEM()
         
         
         # --------------------- EX stage ---------------------
-        
+        self.handle_EX()
         
         
         # --------------------- ID stage ---------------------
-        
+        self.handle_ID()
         
         
         # --------------------- IF stage ---------------------
+        self.handle_IF()
+
         
-        self.halted = True
-        if self.state.IF["nop"] and self.state.ID["nop"] and self.state.EX["nop"] and self.state.MEM["nop"] and self.state.WB["nop"]:
+        if self.state.ID["halted"] and self.state.EX["halted"] and self.state.MEM["halted"] and self.state.WB["halted"]:
             self.halted = True
         
         self.myRF.outputRF(self.cycle) # dump RF
-        self.printState(self.nextState, self.cycle) # print states after executing cycle 0, cycle 1, cycle 2 ... 
+        self.printState(self.state, self.cycle) # print states after executing cycle 0, cycle 1, cycle 2 ... 
         
-        self.state = self.nextState #The end of the cycle and updates the current state with the values calculated in this cycle
         self.cycle += 1
 
     def printState(self, state, cycle):
-        printstate = ["-"*70+"\n", "State after executing cycle: " + str(cycle) + "\n"]
+        printstate = [ "State after executing cycle:\t" + str(cycle) + "\n"]
         printstate.extend(["IF." + key + ": " + str(val) + "\n" for key, val in state.IF.items()])
         printstate.extend(["ID." + key + ": " + str(val) + "\n" for key, val in state.ID.items()])
         printstate.extend(["EX." + key + ": " + str(val) + "\n" for key, val in state.EX.items()])
@@ -254,7 +281,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # ioDir = os.path.abspath(args.iodir)
-    ioDir = '/Users/adityachawla/Desktop/course_work/csa_project/risc-v-simulator/TC1'
+    ioDir = '/Users/adityachawla/Desktop/course_work/csa_project/risc-v-simulator/TC4'
     print("IO Directory:", ioDir)
 
     imem = InsMem("Imem", ioDir)
@@ -264,6 +291,7 @@ if __name__ == "__main__":
     ssCore = SingleStageCore(ioDir, imem, dmem_ss)
     fsCore = FiveStageCore(ioDir, imem, dmem_fs)
 
+    
     while(True):
         if not ssCore.halted:
             ssCore.step()
@@ -272,6 +300,13 @@ if __name__ == "__main__":
             fsCore.step()
 
         if ssCore.halted and fsCore.halted:
+            # artificially add 
+            fsCore.myRF.outputRF(fsCore.cycle) # dump RF
+            fsCore.printState(fsCore.state, fsCore.cycle) 
+            fsCore.cycle += 1
+            break
+            
+        if ssCore.cycle > 5000 or fsCore.cycle > 5000: # fail safe
             break
     
     # dump SS and FS data mem.
