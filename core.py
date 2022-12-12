@@ -4,6 +4,7 @@ from stage_utils import STAGES
 from alu import ALU
 from instruction import Instruction, INSTR_TYPES
 
+MemSize = 1000
 
 class State(object):
     def __init__(self):
@@ -90,6 +91,9 @@ class DataMem(object):
         self.ioDir = ioDir
         with open(os.path.join(ioDir,'dmem.txt')) as dm:
             self.DMem = [data.replace("\n", "") for data in dm.readlines()]
+        
+        while len(self.DMem)<4000:
+            self.DMem.append('00000000')
 
     def readDataMem(self, ReadAddress):
         #read data memory

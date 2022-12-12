@@ -23,6 +23,25 @@ class FiveStageCore(Core):
 
         self.state.IF["PC"] += 4
 
+    def check_branching(self,parsed_instruction):
+        val1, val2 = self.buffer.EX["Read_data1"],self.buffer.EX["Read_data2"]
+
+        if self.buffer.WB["parsed_instr"] and self.buffer.WB["parsed_instr"].control.RegWrite:
+            if parsed_instruction.rs1 and parsed_instruction.rs1 == self.buffer.WB["Wrt_reg_addr"]:
+                val1 = self.buffer.WB["Wrt_data"]
+            elif parsed_instruction.rs2 and parsed_instruction.rs2 == self.buffer.WB["Wrt_reg_addr"]:
+                val2 = self.buffer.WB["Wrt_data"]
+
+        if parsed_instruction.rs1 and parsed_instruction.rs1 == self.buffer.MEM["Wrt_reg_addr"]:
+            val1 = self.buffer.MEM["ALUresult"]
+        elif parsed_instruction.rs2 and parsed_instruction.rs2 == self.buffer.MEM["Wrt_reg_addr"]:
+            val2 = self.buffer.MEM["ALUresult"]
+        
+        rs_equal = (val1 == val2)
+
+        return (parsed_instruction.funct3 == '000' and rs_equal) or (parsed_instruction.funct3 == '001' and not rs_equal)
+
+
 
     def handle_ID(self):
         if self.state.ID["halted"]:
@@ -54,6 +73,11 @@ class FiveStageCore(Core):
         if not parsed_instruction.rs2 is None:
             self.buffer.EX["Read_data2"] = self.myRF.readRF(parsed_instruction.rs2)
         
+        if parsed_instruction.control.Branch == 1 and self.check_branching(parsed_instruction):
+            self.state.EX["nop"] = 1
+            self.state.IF["PC"] = self.state.IF["PC"] - 4 + sign_safe_binary_to_int(sign_extend_12(parsed_instruction.imm))
+            return
+
         if not parsed_instruction.imm is None:
             self.buffer.EX["Imm"] = parsed_instruction.imm
         
@@ -64,8 +88,8 @@ class FiveStageCore(Core):
             self.buffer.EX["Wrt_reg_addr"] = parsed_instruction.rd
 
         if parsed_instruction.control.Jump == 1:
-            self.myRF.writeRF(parsed_instruction.rd,self.state.IF["PC"]+4)
-            self.state.IF["PC"] = self.state.IF["PC"] + sign_safe_binary_to_int(sign_extend_12(self.state.EX["Imm"]))
+            self.myRF.writeRF(parsed_instruction.rd,self.state.IF["PC"])
+            self.state.IF["PC"] = self.state.IF["PC"] - 4 + sign_safe_binary_to_int(sign_extend_12(parsed_instruction.imm))
             self.state.EX["nop"] = 1
             return
 
@@ -135,16 +159,6 @@ class FiveStageCore(Core):
 
         if self.state.EX["parsed_instr"]:
             self.buffer.MEM["parsed_instr"] = self.state.EX["parsed_instr"]
-
-            if self.state.EX["parsed_instr"].control.Branch == 1:
-                rs_equal = (self.state.EX["Read_data1"] == self.state.EX["Read_data2"])
-                if (self.state.EX["parsed_instr"].funct3 == '000' and rs_equal) or (self.state.EX["parsed_instr"].funct3 == '001' and not rs_equal):
-                    val = self.state.IF["PC"] + sign_safe_binary_to_int(sign_extend_12(self.state.EX["Imm"]))
-                    self.state.IF = val
-
-                self.state.MEM["nop"] = 1
-                return
-
 
             op1 = self.state.EX["Read_data1"]
             if self.state.EX["parsed_instr"].control.AluSrc == 0:
@@ -267,7 +281,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # ioDir = os.path.abspath(args.iodir)
-    ioDir = '/Users/adityachawla/Desktop/course_work/csa_project/risc-v-simulator/TC2'
+    ioDir = '/Users/adityachawla/Desktop/course_work/csa_project/risc-v-simulator/TC4'
     print("IO Directory:", ioDir)
 
     imem = InsMem("Imem", ioDir)
@@ -277,6 +291,7 @@ if __name__ == "__main__":
     ssCore = SingleStageCore(ioDir, imem, dmem_ss)
     fsCore = FiveStageCore(ioDir, imem, dmem_fs)
 
+    
     while(True):
         if not ssCore.halted:
             ssCore.step()
@@ -285,6 +300,13 @@ if __name__ == "__main__":
             fsCore.step()
 
         if ssCore.halted and fsCore.halted:
+            # artificially add 
+            fsCore.myRF.outputRF(fsCore.cycle) # dump RF
+            fsCore.printState(fsCore.state, fsCore.cycle) 
+            fsCore.cycle += 1
+            break
+            
+        if ssCore.cycle > 5000 or fsCore.cycle > 5000: # fail safe
             break
     
     # dump SS and FS data mem.

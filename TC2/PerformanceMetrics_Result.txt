@@ -1,0 +1,10 @@
+IO Directory: /Users/adityachawla/Desktop/course_work/csa_project/risc-v-simulator/TC2
+Single Stage Core Performance Metrics-----------------------------
+Number of cycles taken: 7
+Cycles per instruction: 1.75
+Instructions per cycle: 0.5714285714285714
+
+Five Stage Core Performance Metrics-----------------------------
+Number of cycles taken: 8
+Cycles per instruction: 2.0
+Instructions per cycle: 0.5
